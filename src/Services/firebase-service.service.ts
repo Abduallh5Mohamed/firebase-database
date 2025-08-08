@@ -101,7 +101,7 @@ export class FirebaseServiceService {
           this.servicesSubject.next(services);
           this.upcomingServicesSubject.next(upcomingServices);
         },
-        (error) => {
+        (error: any) => {
           console.error('Error in services snapshot listener:', error);
           if (error.code === 'permission-denied') {
             console.warn('Firebase permission denied. Please check Firestore security rules.');
@@ -154,7 +154,7 @@ export class FirebaseServiceService {
           this.servicesSubject.next(services);
           this.upcomingServicesSubject.next(upcomingServices);
         },
-        (error) => {
+        (error: any) => {
           console.error('Error in fallback services listener:', error);
           this.servicesSubject.next([]);
           this.upcomingServicesSubject.next([]);

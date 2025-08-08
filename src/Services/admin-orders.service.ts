@@ -46,7 +46,7 @@ export class AdminOrdersService {
           });
           this.ordersSubject.next(orders);
         },
-        (error) => {
+        (error: any) => {
           console.error('Error in admin orders snapshot listener:', error);
           if (error.code === 'permission-denied') {
             console.warn('Firebase permission denied for admin orders. Please check Firestore security rules.');
