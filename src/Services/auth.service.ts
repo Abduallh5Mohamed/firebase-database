@@ -291,6 +291,8 @@ export class AuthService {
         return 'Too many failed attempts. Please try again later.';
       case 'auth/missing-email':
         return 'Please enter your email address.';
+      case 'auth/popup-blocked':
+        return 'Pop-up was blocked by your browser. Please allow pop-ups for this site and try again. Look for a pop-up blocker icon in your address bar.';
       default:
         console.error('Auth error:', error);
         return 'An error occurred. Please try again.';
