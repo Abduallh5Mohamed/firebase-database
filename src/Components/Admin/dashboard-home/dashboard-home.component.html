@@ -1,0 +1,258 @@
+<!-- Main Dashboard Content -->
+<div class="dashboard-container">
+
+  <!-- Top Row: Service Revenue Overview -->
+  <div class="top-row">
+    <!-- D2D Car Services Revenue Chart -->
+    <div class="revenue-section full-width">
+      <div class="chart-card revenue-chart">
+        <div class="card-header">
+          <h3>D2D Car Services Revenue</h3>
+          <div class="chart-tabs">
+            <button class="tab-btn active">ALL</button>
+            <button class="tab-btn">1M</button>
+            <button class="tab-btn">6M</button>
+            <button class="tab-btn">1Y</button>
+          </div>
+        </div>
+        <div class="chart-content">
+          <div class="revenue-stats">
+            <div class="budget-info">
+              <span class="budget-label">Monthly Revenue (USD)</span>
+              <div class="budget-value">$45,780</div>
+              <div class="budget-change positive">12.5%</div>
+              <div class="budget-note">Revenue increase from last month</div>
+            </div>
+            <div class="payouts-info">
+              <span class="payout-label">Services Completed</span>
+              <div class="payout-value">1,247</div>
+              <div class="payout-change positive">8.3%</div>
+              <div class="payout-note">More services than last month</div>
+            </div>
+          </div>
+          <!-- Chart.js Canvas -->
+          <div class="chart-area">
+            <canvas #revenueChart id="revenueChart" width="400" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Row: Service Areas Coverage + Customer Acquisition -->
+  <div class="countries-traffic-row">
+    <!-- Service Areas Coverage Section (col-8) -->
+    <div class="countries-section">
+      <div class="chart-card countries-card">
+        <div class="card-header">
+          <h3>Service Areas Coverage</h3>
+          <button class="export-btn">Export Report</button>
+        </div>
+        <div class="countries-content-grid">
+          <!-- Service Areas List (col-4) -->
+          <div class="countries-list-section">
+            <div class="sales-summary">
+              <div class="total-sales">
+                <span class="sales-label">TOTAL SERVICES THIS MONTH</span>
+                <div class="sales-value">1,247</div>
+                <div class="sales-unit">Car Services</div>
+              </div>
+            </div>
+            <div class="countries-list">
+              <div class="country-item" *ngFor="let area of serviceAreas">
+                <div class="country-info">
+                  <span class="color" [style.background-color]="area.color"></span>
+                  <div class="country-dot" [style.background-color]="area.color"></div>
+                  <span class="country-name">{{ area.name }}</span>
+                </div>
+                <span class="country-sales">{{ area.services | number }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Service Areas Map (col-4) -->
+          <div class="map-section">
+            <div class="world-map-container">
+              <div #worldMap class="world-map" id="worldMap"></div>
+              <div class="map-overlay">
+                <div class="map-stats">
+                  <div class="stat-item">
+                    <span class="stat-label">Active Areas</span>
+                    <span class="stat-value">{{ serviceAreas.length }}</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Total Services</span>
+                    <span class="stat-value">{{ getTotalServices() | number }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Acquisition Section (col-4) -->
+    <div class="traffic-section">
+      <div class="chart-card traffic-card">
+        <div class="card-header">
+          <h3>Customer Acquisition</h3>
+          <div class="traffic-period">This Month</div>
+        </div>
+        <div class="traffic-content">
+          <!-- Customer Sources -->
+          <div class="traffic-sources">
+            <div class="source-item">
+              <div class="source-info">
+                <div class="source-icon search-engine-icon">🔍</div>
+                <div class="source-details">
+                  <span class="source-name">Online Search</span>
+                  <span class="source-percentage">45.2%</span>
+                </div>
+              </div>
+              <div class="source-value">564 customers</div>
+            </div>
+
+            <div class="source-item">
+              <div class="source-info">
+                <div class="source-icon direct-icon">👥</div>
+                <div class="source-details">
+                  <span class="source-name">Referrals</span>
+                  <span class="source-percentage">32.8%</span>
+                </div>
+              </div>
+              <div class="source-value">409 customers</div>
+            </div>
+
+            <div class="source-item">
+              <div class="source-info">
+                <div class="source-icon social-icon">📱</div>
+                <div class="source-details">
+                  <span class="source-name">Social Media</span>
+                  <span class="source-percentage">22.0%</span>
+                </div>
+              </div>
+              <div class="source-value">274 customers</div>
+            </div>
+          </div>
+
+          <!-- Chart.js Customer Acquisition Chart -->
+          <div class="traffic-chart-enhanced">
+            <canvas #customerChart id="customerChart" width="300" height="150"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Analytics Row -->
+  <div class="charts-row">
+    <!-- Recent Car Services -->
+    <div class="chart-card recent-sales">
+      <div class="card-header">
+        <h3>Recent Car Services</h3>
+        <a href="#" class="view-all">View All →</a>
+      </div>
+      <div class="sales-list">
+        <div class="sale-item" *ngFor="let service of recentServices.slice(0, 5)">
+          <div class="sale-info">
+            <div class="service-icon">{{ service.icon }}</div>
+            <div class="sale-details">
+              <h4>{{ service.serviceName }}</h4>
+              <span class="sale-date">{{ service.date }}</span>
+            </div>
+          </div>
+          <div class="sale-amount">{{ formatCurrency(service.price) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service Types Performance -->
+    <div class="chart-card orders-status">
+      <div class="card-header">
+        <h3>Service Types Performance</h3>
+        <div class="date-range">This Month</div>
+      </div>
+      <div class="status-list">
+        <!-- Chart.js Service Types Chart -->
+        <canvas #serviceTypesChart id="serviceTypesChart" width="300" height="250"></canvas>
+      </div>
+    </div>
+
+    <!-- Technician Activity -->
+    <div class="chart-card recent-activity">
+      <div class="card-header">
+        <h3>Technician Activity</h3>
+        <a href="#" class="view-more">View More →</a>
+      </div>
+      <div class="activity-list">
+        <div class="activity-item" *ngFor="let activity of technicianActivities">
+          <div class="activity-icon">{{ activity.icon }}</div>
+          <div class="activity-content">
+            <div class="activity-text">
+              <strong>{{ activity.technician }}</strong> {{ activity.action }}
+            </div>
+            <div class="activity-time">{{ activity.time }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Management Tables Row -->
+  <div class="tables-row">
+    <!-- Latest Service Orders -->
+    <div class="table-card orders-table">
+      <div class="card-header">
+        <h3>Latest Service Orders</h3>
+        <div class="sort-options">
+          <span>SORT BY:</span>
+          <select class="sort-select">
+            <option>Service Date</option>
+            <option>Amount</option>
+            <option>Status</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Service Date</th>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Vehicle</th>
+              <th>Service Type</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Technician</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of latestServiceOrders">
+              <td>{{ order.date }}</td>
+              <td class="order-id">{{ order.id }}</td>
+              <td>{{ order.customer }}</td>
+              <td>
+                <div class="shop-cell">
+                  <div class="shop-icon">🚙</div>
+                  <span>{{ order.vehicle }}</span>
+                </div>
+              </td>
+              <td>{{ order.serviceType }}</td>
+              <td class="amount">{{ formatCurrency(order.amount) }}</td>
+              <td>
+                <span class="status-badge" [class]="getStatusClass(order.status)">
+                  {{ order.status }}
+                </span>
+              </td>
+              <td>{{ order.technician }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- End Dashboard Container -->

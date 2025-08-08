@@ -1,0 +1,106 @@
+<div class="container">
+  <!-- start header -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <div class="navbar-brand-div">
+        <a class="navbar-brand">Earnings</a>
+      </div>
+      <div class="btn-download">
+        <button type="button" class="btn"><i class="fa-solid fa-download"></i> Download Report</button>
+      </div>
+    </div>
+  </nav>
+  <!-- end header -->
+  <!-- start navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link" [class.active]="selectedPeriod === 'Today'" (click)="filterStats('Today')">Today</a>
+          <a class="nav-link" [class.active]="selectedPeriod === 'This Week'" (click)="filterStats('This Week')">This
+            Week</a>
+          <a class="nav-link" [class.active]="selectedPeriod === 'This Month'" (click)="filterStats('This Month')">This
+            Month</a>
+          <a class="nav-link" [class.active]="selectedPeriod === 'This Year'" (click)="filterStats('This Year')">This
+            Year</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- end navbar -->
+
+  <!-- start stats -->
+  <div class="stats-container px-0">
+    <div class="stat-card earnings">
+      <div class="stat-icon money-icon">
+        <i class="fa-solid fa-dollar-sign"></i>
+      </div>
+      <div class="stat-value">${{ currentStats.earnings }}</div>
+      <div class="stat-trend">{{ currentStats.trendEarnings }}</div>
+      <div class="stat-label">{{ selectedPeriod }}'s Earnings</div>
+    </div>
+    <div class="stat-card trips">
+      <div class="stat-icon loyalty-icon">
+        <i class="fa-solid fa-car-side"></i>
+      </div>
+      <div class="stat-value">{{ currentStats.trips }}</div>
+      <div class="stat-trend">{{ currentStats.trendTrips }}</div>
+      <div class="stat-label">Trips Completed</div>
+    </div>
+    <div class="stat-card hours">
+      <div class="stat-icon member-icon">
+        <i class="fa-solid fa-clock"></i>
+      </div>
+      <div class="stat-value">{{ currentStats.hours }}</div>
+      <div class="stat-trend">{{ currentStats.trendHours }}</div>
+      <div class="stat-label">Online Hours</div>
+    </div>
+  </div>
+  <!-- end stats -->
+  <!-- start summary -->
+  <div class="summary">
+    <div class="card">
+      <h3>Earnings Breakdown</h3>
+      <div class="item"><span>Trip Fares</span><span>$1,156.30</span></div>
+      <div class="item"><span>Tips</span><span>$91.50</span></div>
+      <div class="item"><span>Bonuses</span><span>$125.00</span></div>
+      <div class="item negative"><span>Service Fees</span><span>-$125.00</span></div>
+      <div class="item total"><span>Net Earnings</span><span>$1,247.80</span></div>
+    </div>
+    <div class="card payouts">
+      <h3>Recent Payouts</h3>
+      <div class="item">
+        <div class="right-side">
+          <span>$1,247.80</span>
+          <span>2024-01-15 Bank Account</span>
+        </div>
+        <div class="left-side">
+          <span>completed</span>
+        </div>
+      </div>
+      <div class="item">
+        <div class="right-side">
+          <span>$1,156.30</span>
+          <span>2024-01-08 Bank Account</span>
+        </div>
+        <div class="left-side">
+          <span>completed</span>
+        </div>
+      </div>
+      <div class="item">
+        <div class="right-side">
+          <span>$1,398.75</span>
+          <span>2024-01-01 Bank Account</span>
+        </div>
+        <div class="left-side">
+          <span>completed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end summary -->
+</div>

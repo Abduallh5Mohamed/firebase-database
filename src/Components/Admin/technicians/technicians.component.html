@@ -1,0 +1,244 @@
+<section class="technicians-section">
+  <h2 class="section-title">OUR EXPERT TECHNICIANS</h2>
+  <p class="section-subtitle">Highly skilled professionals dedicated to quality service</p>
+
+  <!-- زر Add Technician -->
+  <div class="add-technician-container">
+    <button class="add-technician-btn" (click)="openAddTechnicianModal()">
+      Add New Technician
+    </button>
+  </div>
+
+  <!-- Filter Navigation -->
+  <div class="filters-container">
+    <div class="filters-navbar">
+      <button *ngFor="let filter of filters" class="filter-btn" [class.active]="selectedFilter === filter"
+        (click)="setFilter(filter)">
+        <span class="filter-text">{{filter}}</span>
+        <span class="filter-count">{{getStatusCount(filter)}}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Add Technician Modal -->
+  <div class="modal-overlay" *ngIf="showAddTechnicianModal" (click)="closeAddTechnicianModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3><i class="fas fa-tools"></i> Add New Technician</h3>
+        <button class="close-btn" (click)="closeAddTechnicianModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <form class="technician-form" (ngSubmit)="addTechnician()" #technicianForm="ngForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" placeholder="Full Name" [(ngModel)]="newTechnician.name" name="name" required />
+          </div>
+
+          <div class="form-group">
+            <label>Specialty</label>
+            <input type="text" placeholder="Specialty (e.g. Engine Repair)" [(ngModel)]="newTechnician.specialty" name="specialty" required />
+          </div>
+
+          <div class="form-group">
+            <label>Certification</label>
+            <input type="text" placeholder="Certification (e.g. ASE Certified)" [(ngModel)]="newTechnician.certification" name="certification" required />
+          </div>
+
+          <div class="form-group">
+            <label>Experience</label>
+            <input type="text" placeholder="Experience (e.g. 5 Years)" [(ngModel)]="newTechnician.experience" name="experience" required />
+          </div>
+
+          <div class="form-group">
+            <label>Joined</label>
+            <input type="text" placeholder="Joined (e.g. Jan 2024)" [(ngModel)]="newTechnician.joined" name="joined" required />
+          </div>
+
+          <div class="form-group">
+            <label>Status</label>
+            <select [(ngModel)]="newTechnician.status" name="status" required class="status-select">
+              <option *ngFor="let option of statusOptions" [value]="option.value">
+                {{ option.label }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Rating</label>
+            <input type="number" placeholder="Rating (e.g. 4.8)" [(ngModel)]="newTechnician.rating" name="rating" step="0.1" min="0" max="5" required />
+          </div>
+
+          <div class="form-group">
+            <label>Completed Jobs</label>
+            <input type="number" placeholder="Completed Jobs" [(ngModel)]="newTechnician.completedJobs" name="completedJobs" min="0" required />
+          </div>
+
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" placeholder="Email Address" [(ngModel)]="newTechnician.email" name="email" required />
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <div class="password-container">
+              <input 
+                [type]="showPassword ? 'text' : 'password'"
+                class="password-input"
+                placeholder="Password" 
+                [(ngModel)]="newTechnician.password" 
+                name="password" 
+                required 
+              />
+              <button 
+                type="button" 
+                class="password-toggle" 
+                (click)="togglePasswordVisibility()"
+                title="Toggle password visibility"
+              >
+                <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Technician Image</label>
+            <input type="file" class="file-input" (change)="onImageSelected($event)" accept="image/*" required />
+            <img *ngIf="previewImage" [src]="previewImage" alt="Preview" class="image-preview" />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="submit-technician-btn" [disabled]="!technicianForm.valid">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Profile View Modal -->
+  <div class="modal-overlay" *ngIf="showProfileModal" (click)="closeProfileModal()">
+    <div class="modal-content profile-modal" (click)="$event.stopPropagation()" [class.dark-mode]="isDarkMode">
+      <div class="modal-header">
+        <h3><i class="fas fa-user-circle"></i> Technician Profile</h3>
+        <button class="close-btn" (click)="closeProfileModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="profile-content">
+        <div class="profile-header">
+          <img [src]="selectedTechnician?.image" class="profile-img-large" [alt]="selectedTechnician?.name">
+          <h3 class="profile-name">{{selectedTechnician?.name}}</h3>
+          <p class="profile-title">{{selectedTechnician?.specialty}}</p>
+        </div>
+
+        <div class="profile-stats">
+          <div class="stat-item">
+            <div class="stat-value">{{selectedTechnician?.completedJobs}}</div>
+            <div class="stat-label">TOTAL JOBS</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{selectedTechnician?.rating}}</div>
+            <div class="stat-label">RATING</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{selectedTechnician?.experience}}</div>
+            <div class="stat-label">EXPERIENCE</div>
+          </div>
+        </div>
+
+        <div class="profile-details">
+          <div class="detail-item">
+            <span class="detail-label">CERTIFICATION</span>
+            <span class="detail-value">{{selectedTechnician?.certification}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">JOINED</span>
+            <span class="detail-value">{{selectedTechnician?.joined}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">STATUS</span>
+            <span class="detail-value status-badge" [ngClass]="selectedTechnician?.status.toLowerCase().replace(' ', '-')">
+              {{selectedTechnician?.status}}
+            </span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">EMAIL</span>
+            <span class="detail-value">{{selectedTechnician?.email}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row g-4">
+      <div class="col-xl-3 col-lg-4 col-md-6 col-12" *ngFor="let tech of filteredTechnicians">
+        <div class="card">
+          <div class="contact-buttons">
+            <button class="contact-btn phone-btn" (click)="callTechnician(tech)" title="Certification">
+              <i class="fas fa-certificate"></i>
+            </button>
+            <button class="contact-btn email-btn" (click)="emailTechnician(tech)" title="Jobs">
+              <i class="fas fa-tasks"></i>
+            </button>
+          </div>
+
+          <button class="remove-btn-icon" (click)="removeTechnician(tech)" title="Remove Technician">
+            <i class="fas fa-times"></i>
+          </button>
+
+          <div class="status-indicator" [ngClass]="{
+                 'available': tech.status === 'Available',
+                 'busy': tech.status === 'Busy',
+                 'on-break': tech.status === 'On Break'
+               }" [title]="tech.status">
+            {{ tech.status }}
+          </div>
+
+          <img [src]="tech.image" class="profile-img" [alt]="tech.name">
+
+          <h5 class="technician-name">{{ tech.name }}</h5>
+
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fas fa-tools contact-icon"></i>
+              <span class="contact-text">{{ tech.specialty }}</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-medal contact-icon"></i>
+              <span class="contact-text">{{ tech.certification }}</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-star contact-icon"></i>
+              <span class="contact-text">{{ tech.rating }}⭐ ({{ tech.completedJobs }} jobs)</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-calendar contact-icon"></i>
+              <span class="contact-text">Experience: {{ tech.experience }}</span>
+            </div>
+          </div>
+
+          <div class="join-date">Working Since: {{ tech.joined }}</div>
+
+          <div class="action-footer">
+            <button class="profile-btn" (click)="viewTechnicianProfile(tech)">VIEW PROFILE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="filteredTechnicians.length === 0" class="empty-state">
+      <div class="empty-icon">👨‍🔧</div>
+      <div class="empty-title">No Technicians Found</div>
+      <div class="empty-description">
+        There are no technicians with "{{selectedFilter}}" status.
+      </div>
+      <button class="empty-action" (click)="setFilter('All')">
+        Show All Technicians
+      </button>
+    </div>
+  </div>
+</section>

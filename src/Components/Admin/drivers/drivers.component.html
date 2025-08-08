@@ -1,0 +1,231 @@
+
+<section class="drivers-section">
+  <h2 class="section-title">OUR VALUED DRIVERS</h2>
+  <p class="section-subtitle">We're proud to serve these amazing professionals</p>
+
+  <!-- زر Add Driver -->
+  <div class="add-driver-container">
+    <button class="add-driver-btn" (click)="openAddDriverModal()">
+      Add New Driver
+    </button>
+  </div>
+
+  <!-- مودال إضافة السائق -->
+  <div class="modal-overlay" *ngIf="showAddDriverModal" (click)="closeAddDriverModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3><i class="fas fa-id-card"></i> Add New Driver</h3>
+        <button class="close-btn" (click)="closeAddDriverModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <form class="driver-form" (ngSubmit)="addDriver()" #driverForm="ngForm">
+        <!-- شبكة الحقول -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" placeholder="Full Name" [(ngModel)]="newDriver.name" name="name" required />
+          </div>
+
+          <div class="form-group">
+            <label>License Number</label>
+            <input type="text" placeholder="License Number" [(ngModel)]="newDriver.licenseNumber" name="licenseNumber"
+              required />
+          </div>
+
+          <div class="form-group">
+            <label>Experience</label>
+            <input type="text" placeholder="Experience (e.g. 5 Years)" [(ngModel)]="newDriver.experience"
+              name="experience" required />
+          </div>
+
+          <div class="form-group">
+            <label>Vehicle Type</label>
+            <input type="text" placeholder="Vehicle Type" [(ngModel)]="newDriver.vehicleType" name="vehicleType"
+              required />
+          </div>
+
+          <div class="form-group">
+            <label>Joined</label>
+            <input type="text" placeholder="Joined (e.g. Jan 2024)" [(ngModel)]="newDriver.joined" name="joined"
+              required />
+          </div>
+
+          <div class="form-group">
+            <label>Rating</label>
+            <input type="number" placeholder="Rating (e.g. 4.8)" [(ngModel)]="newDriver.rating" name="rating" step="0.1"
+              required />
+          </div>
+
+          <div class="form-group">
+            <label>Total Trips</label>
+            <input type="number" placeholder="Total Trips" [(ngModel)]="newDriver.totalTrips" name="totalTrips"
+              required />
+          </div>
+
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" placeholder="Email Address" [(ngModel)]="newDriver.email" name="email" required />
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="Password" [(ngModel)]="newDriver.password" name="password" required />
+          </div>
+
+          <!-- زرار اختيار الصورة + معاينة -->
+          <div class="form-group full-width">
+            <label>Driver Image</label>
+            <input type="file" class="file-input" (change)="onImageSelected($event)" accept="image/*" required />
+            <img *ngIf="previewImage" [src]="previewImage" alt="Preview" class="image-preview" />
+          </div>
+        </div>
+
+        <!-- زر Submit فقط -->
+        <div class="form-actions">
+          <button type="submit" class="submit-driver-btn" [disabled]="!driverForm.valid">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- مودال عرض تفاصيل السائق -->
+  <div class="modal-overlay" *ngIf="showDriverProfileModal" (click)="closeDriverProfileModal()">
+    <div class="profile-modal-content" (click)="$event.stopPropagation()">
+      <div class="profile-modal-header">
+        <h3><i class="fas fa-user-circle"></i> Driver Profile</h3>
+        <button class="close-btn" (click)="closeDriverProfileModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="profile-modal-body" *ngIf="selectedDriver">
+        <!-- صورة السائق -->
+        <div class="profile-image-section">
+          <img [src]="selectedDriver.image" [alt]="selectedDriver.name" class="profile-modal-image">
+          <div class="rating-badge">
+            <i class="fas fa-star"></i>
+            <span>{{ selectedDriver.rating }}</span>
+          </div>
+        </div>
+
+        <!-- معلومات السائق -->
+        <div class="profile-info-section">
+          <h2 class="driver-profile-name">{{ selectedDriver.name }}</h2>
+          <p class="driver-profile-subtitle">Professional Driver</p>
+          
+          <div class="profile-stats">
+            <div class="stat-item">
+              <div class="stat-number">{{ selectedDriver.totalTrips }}</div>
+              <div class="stat-label">Total Trips</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ selectedDriver.rating }}</div>
+              <div class="stat-label">Rating</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ selectedDriver.experience }}</div>
+              <div class="stat-label">Experience</div>
+            </div>
+          </div>
+
+          <div class="profile-details">
+            <div class="detail-row">
+              <div class="detail-icon">
+                <i class="fas fa-id-card"></i>
+              </div>
+              <div class="detail-content">
+                <span class="detail-label">License Number</span>
+                <span class="detail-value">{{ selectedDriver.licenseNumber }}</span>
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-icon">
+                <i class="fas fa-car"></i>
+              </div>
+              <div class="detail-content">
+                <span class="detail-label">Vehicle Type</span>
+                <span class="detail-value">{{ selectedDriver.vehicleType }}</span>
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-icon">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+              <div class="detail-content">
+                <span class="detail-label">Driving Since</span>
+                <span class="detail-value">{{ selectedDriver.joined }}</span>
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="detail-content">
+                <span class="detail-label">Email Address</span>
+                <span class="detail-value">{{ selectedDriver.email }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="profile-actions">
+            <button class="action-btn primary-btn" (click)="contactDriver(selectedDriver)">
+              <i class="fas fa-phone"></i>
+              Contact Driver
+            </button>
+            <button class="action-btn secondary-btn" (click)="sendMessage(selectedDriver)">
+              <i class="fas fa-envelope"></i>
+              Send Message
+            </button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- كروت السائقين -->
+  <div class="container-fluid">
+    <div class="row g-4">
+      <div class="col-xl-3 col-lg-4 col-md-6 col-12" *ngFor="let driver of drivers">
+        <div class="card">
+          <div class="contact-buttons">
+            <button class="contact-btn phone-btn" (click)="callDriver(driver)" title="License Number">
+              <i class="fas fa-id-card"></i>
+            </button>
+            <button class="contact-btn email-btn" (click)="emailDriver(driver)" title="Total Trips">
+              <i class="fas fa-route"></i>
+            </button>
+          </div>
+          <button class="remove-btn-icon" (click)="removeDriver(driver)" title="Remove Driver">
+            <i class="fas fa-times"></i>
+          </button>
+          <img [src]="driver.image" class="profile-img" [alt]="driver.name">
+          <h5 class="driver-name">{{ driver.name }}</h5>
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fas fa-id-card contact-icon"></i>
+              <span class="contact-text">License: {{ driver.licenseNumber }}</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-calendar contact-icon"></i>
+              <span class="contact-text">Experience: {{ driver.experience }}</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-car contact-icon"></i>
+              <span class="contact-text">Vehicle: {{ driver.vehicleType }}</span>
+            </div>
+
+          </div>
+          <div class="join-date">Driving Since: {{ driver.joined }}</div>
+          <div class="action-footer">
+            <button class="profile-btn" (click)="viewDriverProfile(driver)">VIEW PROFILE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

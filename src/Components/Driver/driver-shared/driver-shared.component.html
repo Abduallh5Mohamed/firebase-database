@@ -1,0 +1,48 @@
+<div class="profile-bar">
+  <img src="/assets/driver-shared-img/client.jpg" alt="Profile" class="profile-image">
+  <div class="profile-info">
+    <p class="header">{{ driverProfile.name }}</p>
+    <p class="rating">★ {{ driverProfile.rating }} (127 reviews) · {{ driverProfile.totalJobs }} jobs completed</p>
+  </div>
+  <div class="earnings d-flex justify-content-between">
+    <div class="today">
+      <p>${{ driverProfile.earningsToday }}</p>
+      <h3>Today</h3>
+    </div>
+    <div class="week">
+      <p>${{ driverProfile.earningsWeek }}</p>
+      <h3>This Week</h3>
+    </div>
+  </div>
+  <span 
+  class="availability" 
+  [ngClass]="{
+    'available': availabilityStatus === 'Available',
+    'unavailable': availabilityStatus === 'Unavailable',
+  }">
+  {{ availabilityStatus }}
+</span>
+
+</div>
+<div class="nav-tabs">
+  <button class="nav-tab" routerLink="/driver/dashboard" routerLinkActive="active">
+    <i class="fas fa-tachometer-alt"></i>
+    Dashboard
+  </button>
+
+  <button class="nav-tab" routerLink="/driver/job" routerLinkActive="active">
+    <i class="fa-solid fa-toolbox"></i>
+    Jobs
+  </button>
+
+  <button class="nav-tab" routerLink="/driver/earnings" routerLinkActive="active">
+    <i class="fa-solid fa-dollar-sign"></i>
+    Earnings
+  </button>
+
+  <button class="nav-tab" routerLink="/driver/profile" routerLinkActive="active">
+    <i class="fas fa-user-cog"></i>
+    Profile
+  </button>
+</div>
+<router-outlet></router-outlet>

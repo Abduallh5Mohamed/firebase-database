@@ -1,0 +1,123 @@
+<div class="container">
+  <!-- Abvailability Status -->
+  <div class="availability-container">
+    <div class="availability-toggle">
+      <div class="availability-label">Availability Status</div>
+      <select class="availability-select" [value]="availablityStatus" (change)="onStatusChange($event)">
+        <option value="Available">Available</option>
+        <option value="Unavailable">Unavailable</option>
+      </select>
+    </div>
+    <div class="toggle-text">Toggle your availability to receive new jobs</div>
+  </div>
+  <!-- Abvailability Status -->
+
+  <!-- Statistics -->
+  <div class="statistics-container">
+    <div class="card" *ngFor="let statistic of statistics">
+      <div class="card-inner">
+        <div class="icon {{statistic.color}}">
+          <i class="{{statistic.icon}}"></i>
+        </div>
+        <div class="card-title">
+          <h3>{{statistic.title}}</h3>
+          <p>${{statistic.total}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Statistics -->
+  <!-- Stats -->
+  <div class="stats-container px-0">
+    <div class="stat-card earnings">
+      <div class="stat-icon money-icon">
+        <i class="fa-solid fa-dollar-sign"></i>
+      </div>
+      <div class="stat-value">$2470</div>
+      <div class="stat-trend">+12%</div>
+      <div class="stat-label">Monthly Earnings</div>
+    </div>
+    <div class="stat-card trips">
+      <div class="stat-icon loyalty-icon">
+        <i class="fa-solid fa-car-side"></i>
+      </div>
+      <div class="stat-value">18</div>
+      <div class="stat-trend">+8%</div>
+      <div class="stat-label">Trips Completed</div>
+    </div>
+    <div class="stat-card hours">
+      <div class="stat-icon member-icon">
+        <i class="fa-solid fa-clock"></i>
+      </div>
+      <div class="stat-value">8.5h</div>
+      <div class="stat-trend">+2h</div>
+      <div class="stat-label">Online Hours</div>
+    </div>
+    <div class="stat-card rating">
+      <div class="stat-icon services-icon">
+        <i class="fa-solid fa-star"></i>
+      </div>
+      <div class="stat-value">4.8</div>
+      <div class="stat-trend">+0.1</div>
+      <div class="stat-label">Rating</div>
+    </div>
+    <!-- Stats -->
+  </div>
+  <!-- Trips -->
+  <div class="trip-container">
+    <div class="recent-trip">
+      <div class="section-title">Recent Trips</div>
+      <div class="trip-item">
+        <div class="trip-icon"><i class="fa-solid fa-user"></i></div>
+        <div class="trip-details">
+          <p>Trip to Downtown</p>
+          <p>2.5km · 15 min ago</p>
+        </div>
+        <div class="trip-earnings">$18.50 <span>Completed</span></div>
+      </div>
+      <div class="trip-item">
+        <div class="trip-icon"><i class="fa-solid fa-user"></i></div>
+        <div class="trip-details">
+          <p>Trip to Downtown</p>
+          <p>2.5km · 15 min ago</p>
+        </div>
+        <div class="trip-earnings">$18.50 <span>Completed</span></div>
+      </div>
+      <div class="trip-item">
+        <div class="trip-icon"><i class="fa-solid fa-user"></i></div>
+        <div class="trip-details">
+          <p>Trip to Downtown</p>
+          <p>2.5km · 15 min ago</p>
+        </div>
+        <div class="trip-earnings">$18.50 <span>Completed</span></div>
+      </div>
+    </div>
+    <div class="weekly-summary">
+      <div class="section-title">Weekly Summary</div>
+      <div class="weekly-summary-item">
+        <div class="label">Total Earnings</div>
+        <div class="value">$1,247.80</div>
+      </div>
+      <div class="weekly-summary-item">
+        <div class="label">Total Trips</div>
+        <div class="value">87</div>
+      </div>
+      <div class="weekly-summary-item">
+        <div class="label">Online Hours</div>
+        <div class="value">42.5h</div>
+      </div>
+      <div class="weekly-summary-item">
+        <div class="label">Average Rating</div>
+        <div class="value">4.8/5</div>
+      </div>
+      <div class="weekly-summary-item">
+        <div class="label">Weekly Goal Progress</div>
+        <div class="value">78% of $1,600 goal</div>
+        <div class="progress-bar">
+          <div class="progress"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Trips -->
+</div>

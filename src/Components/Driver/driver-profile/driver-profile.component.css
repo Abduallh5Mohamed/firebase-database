@@ -1,0 +1,411 @@
+/* start header */
+.navbar {
+  background-color: var(--background-color);
+  height: 4rem;
+  max-width: 95%;
+  margin: 0.8rem auto;
+}
+
+.navbar-brand {
+  color: var(--light-font-color);
+  font-weight: bold;
+}
+
+.btn-download button {
+  background-color: rgb(28, 99, 176);
+  color: var(--light-font-color);
+  transition: var(--time-transition);
+}
+
+.btn-download button:hover {
+  transform: translateY(-5px);
+}
+
+@media (max-width:992px) {
+  .btn-download button {
+    margin: 2rem 0;
+  }
+}
+
+/* end header */
+/* start driver-profile */
+.profile {
+  width: 100%;
+  max-width: 92%;
+  margin: 2rem auto;
+  background-color: var(--card-bg-color);
+  border-radius: 10px;
+  padding: 2rem;
+  color: var(--light-font-color);
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.profile-body {
+  margin: 3rem 0;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.profile-body .image {
+  width: 8rem;
+  height: 8rem;
+  position: relative;
+  border-radius: 50%;
+  border: 3px solid var(--primary-color);
+  z-index: 1;
+}
+
+.profile-body .image img {
+  max-width: 100%;
+  display: block;
+  position: relative;
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.profile-body .image::after {
+  content: '\f030';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  right: -0.5rem;
+  padding: 0 0.5rem;
+  top: 5.5rem;
+  font-size: 1.5rem;
+  color: rgb(48, 113, 216);
+  background-color: var(--dark);
+  border-radius: 50%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.profile-body form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 80%;
+}
+
+.profile-body .row {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+}
+
+.profile-body .col-6 {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-body label {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--light-font-color);
+}
+
+.profile-body input,
+.profile-body textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+  background-color: var(--input-bg, #1e1e1e);
+  color: var(--light-font-color);
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  resize: none;
+}
+
+.profile-body input:focus,
+.profile-body textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(48, 113, 216, 0.2);
+}
+
+
+@media (max-width: 768px) {
+  .profile-body {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-body form {
+    width: 100%;
+  }
+
+  .profile-body .row {
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .profile-body .col-6 {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
+
+.profile-footer {
+  margin-top: 2rem;
+  padding-top: 2rem;
+}
+
+.profile-footer form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 2rem;
+  width: 100%;
+}
+
+.profile-footer .row {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  align-items: stretch;
+}
+
+.profile-footer .col-6 {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 180px;
+}
+
+.profile-footer textarea {
+  height: 100%;
+  resize: none;
+}
+
+
+.profile-footer label {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--light-font-color);
+}
+
+.profile-footer input,
+.profile-footer textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+  background-color: var(--input-bg, #1e1e1e);
+  color: var(--light-font-color);
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.profile-footer input:focus,
+.profile-footer textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(48, 113, 216, 0.2);
+}
+
+@media (max-width: 768px) {
+  .profile-footer form {
+    width: 100%;
+  }
+
+  .profile-footer .row {
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .profile-footer .col-6 {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
+
+/* end driver-profile */
+/* start statistics */
+.stats-container {
+  max-width: 92%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--card-bg-color);
+  padding: 1rem;
+  flex-wrap: wrap;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.stat-card {
+  background-color: var(--card-bg-color);
+  padding: 1.5rem;
+  margin: 1rem;
+  border-radius: 12px;
+  text-align: center;
+  flex: 1 1 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Card color variations */
+.stat-card.earnings {
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(46, 204, 113, 0.2) 100%);
+  border-left: 4px solid #2ecc71;
+}
+
+.stat-card.trips {
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0.2) 100%);
+  border-left: 4px solid #3498db;
+}
+
+.stat-card.hours {
+  background: linear-gradient(135deg, rgba(155, 89, 182, 0.1) 0%, rgba(155, 89, 182, 0.2) 100%);
+  border-left: 4px solid #9b59b6;
+}
+
+.stat-card.rating {
+  background: linear-gradient(135deg, rgba(241, 196, 15, 0.1) 0%, rgba(241, 196, 15, 0.2) 100%);
+  border-left: 4px solid #f1c40f;
+}
+
+.stat-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  padding: 1rem 2rem;
+  font-size: 2rem;
+  border-radius: 10%;
+}
+
+.stat-icon i {
+  font-size: 22px;
+  padding: 14px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+/* Icon color variations */
+.earnings .stat-icon i {
+  background-color: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+.trips .stat-icon i {
+  background-color: rgba(52, 152, 219, 0.2);
+  color: #3498db;
+}
+
+.hours .stat-icon i {
+  background-color: rgba(155, 89, 182, 0.2);
+  color: #9b59b6;
+}
+
+.rating .stat-icon i {
+  background-color: rgba(241, 196, 15, 0.2);
+  color: #f1c40f;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Value colors */
+.earnings .stat-value {
+  color: #2ecc71;
+}
+
+.trips .stat-value {
+  color: #3498db;
+}
+
+.hours .stat-value {
+  color: #9b59b6;
+}
+
+.rating .stat-value {
+  color: #f1c40f;
+}
+
+.stat-trend {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #2ecc71;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--light-font-color);
+  opacity: 0.8;
+}
+
+.stat-trend {
+  color: #28a745;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--light-font-color);
+}
+
+@media (max-width: 768px) {
+  .stats-container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .stat-card {
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+    margin: 10px auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-value {
+    font-size: 18px;
+  }
+
+  .stat-trend {
+    font-size: 12px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+  }
+
+  .stat-icon i {
+    font-size: 18px;
+    padding: 12px;
+  }
+}
+
+/* end statistics */

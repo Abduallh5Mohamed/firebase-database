@@ -1,0 +1,120 @@
+<div class="main-container">
+
+  <!-- Content Section -->
+  <div class="content-section">
+
+    <!-- Jobs Header -->
+    <div class="jobs-header">
+      <h2>All Jobs</h2>
+      <div class="jobs-filters">
+        <select class="dropdown-button" (change)="onStatusFilterChange($event)">
+          <option value="all-status">All Status</option>
+          <option>Pending</option>
+          <option>Accepted</option>
+          <option>Rejected</option>
+          <option>Completed</option>
+        </select>
+
+        <select class="dropdown-button" (change)="onServiceFilterChange($event)">
+          <option value="all-services">All Services</option>
+          <option>Oil Change</option>
+          <option>Brake Inspection</option>
+          <option>Tire Replacement</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Jobs as Bars -->
+    <div class="jobs-bars">
+      <div class="job-bar" *ngFor="let job of filteredJobs">
+        <div class="job-info">
+          <h3>{{ job.title }} <span class="job-status">{{ job.status }}</span></h3>
+          <div class="job-details">
+            <div class="job-detail">
+              <i class="fas fa-user"></i> {{ job.customerName }}
+            </div>
+            <div class="job-detail">
+              <i class="fas fa-car"></i> {{ job.carModel }}
+            </div>
+            <div class="job-detail">
+              <i class="fas fa-clock"></i> {{ job.time }}
+            </div>
+            <div class="job-detail">
+              <i class="fas fa-map-marker-alt"></i> {{ job.distance }} away
+            </div>
+          </div>
+
+          <div class="job-actions">
+            <button class="btn view" (click)="openModal(job)">👁 View Details</button>
+            <button class="btn call" (click)="callCustomer(job)">📞 Call Customer</button>
+            <button class="btn directions" (click)="getDirections(job)">🗺 Get Directions</button>
+          </div>
+        </div>
+
+        <div class="job-meta">
+          <span class="price">${{ job.price }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" *ngIf="modalOpen" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <button class="modal-close-btn" (click)="closeModal()">×</button>
+
+        <ng-container *ngIf="loadingDetails; else showDetails">
+          <p class="loading-text">Loading job details...</p>
+        </ng-container>
+
+        <ng-template #showDetails>
+          <h2>{{ selectedJob?.title }} Details</h2>
+          <p><strong>Status:</strong> {{ selectedJob?.status }}</p>
+          <p><strong>Customer:</strong> {{ selectedJob?.customerName }}</p>
+          <p><strong>Car Model:</strong> {{ selectedJob?.carModel }}</p>
+          <p><strong>Scheduled Time:</strong> {{ selectedJob?.time }}</p>
+          <p><strong>Distance:</strong> {{ selectedJob?.distance }} away</p>
+          <p><strong>Price:</strong> ${{ selectedJob?.price }}</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Dual Divs -->
+    <div class="dual-divs">
+      <div class="div-item performance-div">
+        <h2>Performance this month</h2>
+        <div class="performance-details">
+          <p>Job Completed: <span>{{ performanceData.jobsCompleted }}</span></p>
+          <p>Average Rate: <span>{{ performanceData.averageRate }}</span></p>
+          <p>Response Time: <span>{{ performanceData.responseTime }}</span></p>
+          <p>Completion Rate: <span>{{ performanceData.completionRate }}</span></p>
+        </div>
+      </div>
+
+      <div class="div-item top-services-div">
+        <h2>Top Services</h2>
+        <div class="top-services-list">
+          <div class="service-item" *ngFor="let service of topServices">
+            <h3>{{ service.service }}</h3>
+            <p class="price">💰 {{ service.price }}</p>
+            <p class="count">Completed: {{ service.count }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Specialties Div -->
+    <div class="div-item specialties-div">
+      <h2>Specialties & Services</h2>
+      <div class="current-specialties">
+        <span class="specialty-tag" *ngFor="let specialty of specialties">
+          {{ specialty }} <span class="remove-specialty" (click)="removeSpecialty(specialty)">×</span>
+        </span>
+      </div>
+      <div class="add-specialty">
+        <input type="text" placeholder="Add new service" [(ngModel)]="newSpecialty" />
+        <button class="add-button" (click)="addSpecialty()">+</button>
+      </div>
+    </div>
+
+  </div>
+</div>

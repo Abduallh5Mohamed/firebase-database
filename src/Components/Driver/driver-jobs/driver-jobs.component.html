@@ -1,0 +1,58 @@
+<div class="container">
+  <!-- navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">My Trips</a>
+      <button class="navbar-toggler" type="button" (click)="toggleNavbar()" aria-controls="navbarNav"
+        [attr.aria-expanded]="!isNavbarCollapsed" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" [class.show]="!isNavbarCollapsed" id="navbarNav">
+        <ul class="navbar-nav" id="navTabs">
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="selectedStatus === 'All'" (click)="filterTrips('All')">All trips</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="selectedStatus === 'Active'" (click)="filterTrips('Active')">Active</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="selectedStatus === 'Completed'"
+              (click)="filterTrips('Completed')">Complete</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- trip cards -->
+  <div class="trip-cards">
+    <div class="trip-card" *ngFor="let trip of filteredTrips">
+      <div class="trip-header">
+        <div class="driver-info">
+          <span class="driver-avatar"><i class="fa-solid fa-user"></i></span>
+          <span class="driver-name">{{ trip.driverName }}</span>
+          <span class="status" [ngClass]="{
+              'completed': trip.status.toLowerCase() === 'completed',
+              'active': trip.status.toLowerCase() === 'active'
+            }">{{ trip.status }}</span>
+        </div>
+        <div class="trip-cost">${{ trip.salary }}</div>
+      </div>
+      <div class="trip-details">
+        <div class="location from">
+          <span class="location-dot green"></span>
+          {{ trip.from }}
+        </div>
+        <div class="location to">
+          <span class="location-dot red"></span>
+          {{ trip.to }} <span class="distance">{{ trip.destination }}</span>
+        </div>
+      </div>
+      <div class="trip-footer">
+        <span class="time"><i class="fa-solid fa-alarm-clock"></i> {{ trip.requestTime }}</span>
+        <span class="ago"><i class="fa-solid fa-bell"></i> {{ trip.ago }}</span>
+        <span class="rating">⭐ {{ trip.rating }}</span>
+      </div>
+    </div>
+  </div>
+</div>

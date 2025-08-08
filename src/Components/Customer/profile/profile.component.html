@@ -1,0 +1,112 @@
+<div class="container-fluid py-4">
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-header">
+                <h3>Customer Information</h3>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="technician-badge badge-senior">Premium</div>
+                    <a class="edit-link" onclick="toggleEdit()">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span id="editText">Edit Profile</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-3 col-md-4 text-center mb-4">
+                    <div class="profile-image-container">
+                        <img src="assets/testimonials-img/tes2.jpg" 
+                             class="profile-image rounded-circle mb-3" alt="Technician">
+                    </div>
+                </div>
+
+                <div class="col-lg-9 col-md-8">
+                    <form id="technicianForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" name="fullName" 
+                                       value="Mohamed Reda" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       value="mohamedreda32@email.com" disabled>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" 
+                                       value="+20 575 767 9879" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="completedServices" class="form-label">Total Services</label>
+                                <input type="number" class="form-control" id="completedServices" 
+                                       name="completedServices" value="8" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="specialization" class="form-label">Car Brand</label>
+                                <input type="text" class="form-control" id="specialization" 
+                                       name="specialization" value="BMW" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="experience" class="form-label">Car Model</label>
+                                <input type="text" class="form-control" id="experience" 
+                                       name="experience" value="X5"  disabled>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="hourlyRate" class="form-label">Car Year</label>
+                                <input type="number" class="form-control" id="hourlyRate" 
+                                       name="hourlyRate" value="2020" min="50" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="technicianType" class="form-label">Customer Type</label>
+                                <input type="text" class="form-control" id="technicianType" 
+                                       name="technicianType" value="Premium" disabled>
+                            </div>
+
+                          
+
+                            <div class="col-12">
+                                <label for="address" class="form-label">Full Address</label>
+                                <textarea class="form-control" id="address" name="address" 
+                                          rows="3" disabled>123 Main Street, Downtown Area, Cairo, Egypt</textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-container">
+            <div class="row g-4">
+                <div class="col-lg-6 col-md-6">
+                    <div class="stat-card join-date">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </div>
+                        <div class="stat-value">2022-03-15</div>
+                        <div class="stat-label">Join Date</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 col-md-6">
+                    <div class="stat-card last-service">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div class="stat-value">2024-08-01</div>
+                        <div class="stat-label">Last Service</div>
+                    </div>
+                </div>
+                
+            
+                
+             
+            </div>
+        </div>
+    </div>

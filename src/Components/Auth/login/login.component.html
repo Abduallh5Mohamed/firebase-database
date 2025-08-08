@@ -1,0 +1,161 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="logo">
+        <i class="fas fa-car"></i>
+        <span>D2D Car</span>
+      </div>
+      <h1>Welcome Back</h1>
+      <p>Sign in to your account</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrapper">
+          <i class="fas fa-envelope input-icon"></i>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="Enter your email address"
+            [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+          />
+        </div>
+        <div class="error-message" *ngIf="getFieldError('email')">
+          {{ getFieldError('email') }}
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock input-icon"></i>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+          >
+            <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+          </button>
+        </div>
+        <div class="error-message" *ngIf="getFieldError('password')">
+          {{ getFieldError('password') }}
+        </div>
+      </div>
+
+      <!-- Remember Me & Forgot Password -->
+      <div class="form-options">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="rememberMe" />
+          <span class="checkmark"></span>
+          Remember me
+        </label>
+        <a href="#" class="link" (click)="$event.preventDefault(); showForgotPasswordForm()">Forgot Password?</a>
+      </div>
+
+      <!-- Forgot Password Form -->
+      <div class="forgot-password-form" *ngIf="showForgotPassword" [formGroup]="forgotPasswordForm">
+        <h3>Reset Your Password</h3>
+        <p>Enter your email and we'll send you a link to reset your password.</p>
+        
+        <div class="form-group">
+          <label for="forgotPasswordEmail">Email Address</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope input-icon"></i>
+            <input
+              type="email"
+              id="forgotPasswordEmail"
+              formControlName="email"
+              placeholder="Enter your email address"
+              [class.error]="forgotPasswordForm.get('email')?.invalid && forgotPasswordForm.get('email')?.touched"
+              [disabled]="forgotPasswordLoading"
+            />
+          </div>
+          <div class="error-message" *ngIf="forgotPasswordForm.get('email')?.touched && forgotPasswordForm.get('email')?.errors?.['required']">
+            Email is required
+          </div>
+          <div class="error-message" *ngIf="forgotPasswordForm.get('email')?.touched && forgotPasswordForm.get('email')?.errors?.['email']">
+            Please enter a valid email address
+          </div>
+        </div>
+
+        <div class="error-message" *ngIf="forgotPasswordMessage">
+          {{ forgotPasswordMessage }}
+        </div>
+
+        <div class="button-group">
+          <button 
+            type="button" 
+            class="auth-btn secondary" 
+            (click)="backToLogin()"
+            [disabled]="forgotPasswordLoading">
+            Back to Login
+          </button>
+          <button 
+            type="button" 
+            class="auth-btn primary" 
+            (click)="onForgotPassword()"
+            [disabled]="forgotPasswordLoading || forgotPasswordForm.invalid">
+            <span *ngIf="!forgotPasswordLoading">Send Reset Link</span>
+            <span *ngIf="forgotPasswordLoading" class="loading">
+              <i class="fas fa-spinner fa-spin"></i>
+              Sending...
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <div class="error-message global-error" *ngIf="errorMessage">
+        <i class="fas fa-exclamation-triangle"></i>
+        {{ errorMessage }}
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="auth-btn primary"
+        [disabled]="loginForm.invalid || isLoading"
+      >
+        <span *ngIf="!isLoading">Sign In</span>
+        <span *ngIf="isLoading" class="loading">
+          <i class="fas fa-spinner fa-spin"></i>
+          Signing In...
+        </span>
+      </button>
+    </form>
+
+    <!-- Divider -->
+    <div class="divider">
+      <span>or continue with</span>
+    </div>
+
+    <!-- Social Login -->
+    <div class="social-login">
+      <button
+        type="button"
+        class="social-btn google full-width"
+        (click)="signInWithGoogle()"
+        [disabled]="isLoading"
+      >
+        <i class="fab fa-google"></i>
+        Google
+      </button>
+    </div>
+
+    <!-- Sign Up Link -->
+    <div class="auth-footer">
+      <p>Don't have an account? <a routerLink="/auth/sign-up" class="link">Create Account</a></p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,246 @@
+<div class="orders-container" (click)="closeDropdowns()">
+  <!-- Header Section -->
+  <h2 class="section-titles">Order DASHBOARD</h2>
+  <p class="section-subtitles">
+    Make informed decisions with real-time order data
+  </p>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <!-- Date Filter Dropdown -->
+      <div class="dropdown" (click)="$event.stopPropagation()">
+        <button
+          class="btn btn-outline-light dropdown-toggle"
+          [class.active]="showDateDropdown"
+          (click)="toggleDateDropdown()"
+        >
+          📅 {{ selectedDateRange }}
+        </button>
+        <ul *ngIf="showDateDropdown" class="dropdown-menu show">
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="selectDateRange('Aug 1 - Aug 6, 2024')"
+              >Aug 1 - Aug 6, 2024</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="selectDateRange('Jul 1 - Jul 31, 2024')"
+              >Jul 1 - Jul 31, 2024</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="selectDateRange('Jun 1 - Jun 30, 2024')"
+              >Jun 1 - Jun 30, 2024</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="selectDateRange('May 1 - May 31, 2024')"
+              >May 1 - May 31, 2024</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <!-- More Actions Dropdown -->
+      <div class="dropdown" (click)="$event.stopPropagation()">
+        <button
+          class="btn btn-outline-light dropdown-toggle"
+          [class.active]="showMoreActions"
+          (click)="toggleMoreActions()"
+        >
+          ⚙️ {{ selectedAction }}
+        </button>
+        <ul *ngIf="showMoreActions" class="dropdown-menu show">
+          <li>
+            <a class="dropdown-item" (click)="selectMoreAction('Export CSV')"
+              >📊 Export CSV</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" (click)="selectMoreAction('Create Order')"
+              >➕ Create Order</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" (click)="selectMoreAction('Analytics')"
+              >📈 Analytics</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" (click)="selectMoreAction('Settings')"
+              >⚙️ Settings</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="selectMoreAction('Clear Modal Orders')"
+              >🗑️ Clear Modal Orders</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="selectMoreAction('Remove Duplicate Orders')"
+              >🔄 Remove Duplicate Orders</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-container">
+    <div class="stat-card">
+      <span class="stat-label">Total Orders</span>
+      <div class="stat-value">{{ totalOrders }}</div>
+      <div class="stat-change positive">
+        ▲ 25.2% last week
+        <div class="mini-chart yellow"></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Order Items</span>
+      <div class="stat-value">{{ orderItems }}</div>
+      <div class="stat-change positive">
+        ▲ 15.2% last week
+        <div class="mini-chart blue"></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Return Orders</span>
+      <div class="stat-value">{{ returnOrders }}</div>
+      <div class="stat-change negative">
+        ▼ -1.2% last week
+        <div class="mini-chart red"></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Fulfilled Orders</span>
+      <div class="stat-value">{{ fulfilledOrders }}</div>
+      <div class="stat-change positive">
+        ▲ 12.2% last week
+        <div class="mini-chart green"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-container">
+    <div class="filters-left btn-group">
+      <button
+        *ngFor="let filter of filters"
+        class="btn btn-outline-light"
+        [class.active]="selectedFilter === filter"
+        (click)="setFilter(filter)"
+      >
+        {{ filter }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div class="table-container">
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th><input type="checkbox" title="Select all" /></th>
+          <th>Order ID</th>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Payment Status</th>
+          <th>Total Amount</th>
+          <th>Delivery Location</th>
+          <th>Items Count</th>
+          <th>Fulfillment</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of filteredOrders; trackBy: trackByOrderId">
+          <td>
+            <input type="checkbox" [title]="'Select order ' + order.id" />
+          </td>
+          <td>
+            <strong>{{ order.id }}</strong>
+          </td>
+          <td>{{ order.date }}</td>
+          <td>
+            <div class="customer-name">{{ order.customer }}</div>
+          </td>
+          <td>
+            <span
+              class="status-badge"
+              [class.pending]="order.payment === 'Pending'"
+              [class.success]="order.payment === 'Success'"
+            >
+              {{ order.payment }}
+            </span>
+          </td>
+          <td>
+            <strong>{{
+              order.total | currency : "USD" : "symbol" : "1.2-2"
+            }}</strong>
+          </td>
+          <td>{{ order.delivery }}</td>
+          <td>{{ order.items }} items</td>
+          <td>
+            <span
+              class="fulfillment-badge"
+              [class.unfulfilled]="order.fulfillment === 'Unfulfilled'"
+              [class.fulfilled]="order.fulfillment === 'Fulfilled'"
+            >
+              {{ order.fulfillment }}
+            </span>
+          </td>
+          <td>
+            <button
+              class="action-btn view"
+              (click)="viewOrder(order.id)"
+              title="View Order"
+            >
+              👁️
+            </button>
+            <button
+              class="action-btn edit"
+              (click)="editOrder(order.id)"
+              title="Edit Order"
+            >
+              ✏️
+            </button>
+            <button
+              class="action-btn delete"
+              (click)="deleteOrder(order.id)"
+              title="Delete Order"
+            >
+              🗑️
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredOrders.length === 0" class="empty-state">
+      <div class="empty-icon">📦</div>
+      <div class="empty-title">No Orders Found</div>
+      <div class="empty-description">
+        There are no orders matching your current filter criteria.
+      </div>
+      <button class="empty-action" (click)="setFilter('All')">
+        Show All Orders
+      </button>
+    </div>
+  </div>
+</div>

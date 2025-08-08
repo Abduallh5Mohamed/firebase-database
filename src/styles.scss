@@ -1,0 +1,424 @@
+// Mobile stacking for dashboard sections
+@media (max-width: 480px) {
+  .countries-traffic-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  .countries-section,
+  .traffic-section {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .countries-section {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .countries-content-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  .sales-summary {
+    order: 1;
+  }
+
+  .map-section {
+    order: 2;
+    margin-top: 1rem !important;
+  }
+
+  .countries-list-section {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+  }
+}
+
+// Modern SCSS with no deprecation warnings
+// Using CSS imports instead of SCSS @import for external resources
+
+// Leaflet CSS import
+@import 'leaflet/dist/leaflet.css';
+
+.technicians-section,
+.drivers-section,
+.customers-section {
+  padding: 1.5rem !important;
+}
+
+@media(max-width: 420px) {
+  .row>* {
+    padding: {
+      right: 0 !important;
+      left: 0 !important;
+    }
+  }
+
+  .g-4,
+  .gy-4 {
+    --bs-gutter-y: 1rem !important;
+  }
+
+  .technicians-section,
+  .drivers-section,
+  .customers-section {
+    padding: 1rem !important;
+  }
+}
+
+// =====================================
+// SCSS Variables (Must be defined first)
+// =====================================
+$primary: #ff3b3be8;
+$background-darkgray: #1C1C1E;
+$dark: #0a0a0a;
+$secondary: #5b272a;
+$light: #ffffff;
+$text-color: #333;
+$card-bg-color: #2c2c2c;
+$icon-bg-color: #ff3b3be8;
+$icon-border-color: #ff3b3b96;
+$background-color: #1a1a1a;
+$light-font-color: #c0c0c0;
+$hover-primary: #fa33338c;
+
+// Status Colors
+$success-color: #4caf50;
+$success-bg: rgba(76, 175, 80, 0.2);
+$warning-color: #ffc107;
+$warning-bg: rgba(255, 193, 7, 0.2);
+$danger-color: #f44336;
+$danger-bg: rgba(244, 67, 54, 0.2);
+
+// Icon Gradient Colors
+$services-gradient-start: #ffa726;
+$services-gradient-end: #ff8a65;
+$money-gradient-start: #66bb6a;
+$money-gradient-end: #4caf50;
+$loyalty-gradient-start: #42a5f5;
+$loyalty-gradient-end: #1e88e5;
+$member-gradient-start: #ab47bc;
+$member-gradient-end: #8e24aa;
+
+// Global Theme Variables
+:root {
+  // Light theme (default) - Enhanced for accessibility
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+  --border-color: #d1d5db;
+  --hover-bg: #f3f4f6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --header-bg: rgba(255, 255, 255, 0.98);
+  --sidebar-bg: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+  --sidebar-header-bg: rgba(255, 59, 59, 0.05);
+  --active-bg: #ff3b3be8;
+  --active-text: #ffffff;
+  --accent-color: #ff3b3be8;
+  --primary-color: #ff3b3be8;
+  --primary-hover: #dc2626;
+  --success-color: #059669;
+  --warning-color: #d97706;
+  --danger-color: #dc2626;
+
+  // SCSS Variables as CSS Variables
+  --secondary-color: #{$secondary};
+  --text-color: #{$text-color};
+  --card-bg-color: #{$card-bg-color};
+  --icon-bg-color: #{$icon-bg-color};
+  --icon-border-color: #{$icon-border-color};
+  --background-color: #{$background-color};
+  --background-darkgray: #{$background-darkgray};
+  --light-font-color: #{$light-font-color};
+  --hover-primary: #{$hover-primary};
+
+  // Status Colors
+  --success-bg: #{$success-bg};
+  --warning-bg: #{$warning-bg};
+  --danger-bg: #{$danger-bg};
+
+  // Icon Gradients
+  --services-gradient: linear-gradient(135deg, #{$services-gradient-start}, #{$services-gradient-end});
+  --money-gradient: linear-gradient(135deg, #{$money-gradient-start}, #{$money-gradient-end});
+  --loyalty-gradient: linear-gradient(135deg, #{$loyalty-gradient-start}, #{$loyalty-gradient-end});
+  --member-gradient: linear-gradient(135deg, #{$member-gradient-start}, #{$member-gradient-end});
+
+  // Layout & Design
+  --padding: 1rem;
+  --border-radius: 16px;
+  --time-transition: 0.3s ease-in-out;
+  --line-height: 1.7;
+  --font-size-small: 0.8rem;
+  --box-shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+  // Scrollbar
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+
+  --dark: #{$dark};
+  --light: #{$light};
+}
+
+// =====================================
+// Theme Variants
+// =====================================
+// Dark theme - Professional Dark Mode Style
+body.dark-theme,
+.dark-theme {
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #181818;
+  --text-primary: #ffffff;
+  --text-secondary: #aaaaaa;
+  --text-muted: #717171;
+  --border-color: #303030;
+  --hover-bg: #272727;
+  --shadow: rgba(0, 0, 0, 0.5);
+  --header-bg: rgba(15, 15, 15, 0.98);
+  --sidebar-bg: linear-gradient(180deg, #0f0f0f 0%, #181818 100%);
+  --sidebar-header-bg: rgba(255, 59, 59, 0.1);
+  --active-bg: #ff3b3be8;
+  --active-text: #ffffff;
+  --accent-color: #ff3b3be8;
+  --primary-color: #ff3b3be8;
+  --primary-hover: #ff5555;
+  --success-color: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.2);
+  --warning-color: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.2);
+  --danger-color: #f87171;
+  --danger-bg: rgba(248, 113, 113, 0.2);
+  --scrollbar-track: #0f0f0f;
+  --scrollbar-thumb: #717171;
+  --scrollbar-thumb-hover: #aaaaaa;
+}
+
+// Light theme explicit class
+body.light-theme,
+.light-theme {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+  --border-color: #d1d5db;
+  --hover-bg: #f3f4f6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --header-bg: rgba(255, 255, 255, 0.98);
+  --sidebar-bg: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  --sidebar-header-bg: rgba(255, 59, 59, 0.05);
+  --active-bg: #ff3b3be8;
+  --active-text: #ffffff;
+  --accent-color: #ff3b3be8;
+  --primary-color: #ff3b3be8;
+  --primary-hover: #dc2626;
+  --success-color: #059669;
+  --success-bg: rgba(5, 150, 105, 0.2);
+  --warning-color: #d97706;
+  --warning-bg: rgba(217, 119, 6, 0.2);
+  --danger-color: #dc2626;
+  --danger-bg: rgba(220, 38, 38, 0.2);
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+}
+
+// =====================================
+// Global Styles
+// =====================================
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Custom Light Scrollbar - Theme Adaptive */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--bg-secondary);
+}
+
+/* Firefox scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-muted) var(--bg-secondary);
+}
+
+body {
+  background-color: var(--background-color) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.light-theme body {
+  background-color: #f5f5f5 !important;
+}
+
+// Hide body scrollbar when on admin pages
+body.admin-page {
+  overflow: hidden;
+}
+
+// =====================================
+// Accessibility
+// =====================================
+// Focus states for accessibility
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+// High contrast focus for navigation
+.nav-link:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+// Ensure proper contrast ratios
+@media (prefers-contrast: high) {
+  :root {
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --border-color: #666666;
+  }
+
+  body.dark-theme {
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --border-color: #999999;
+  }
+}
+
+// Hide body scrollbar when on admin pages
+body.admin-page {
+  overflow: hidden;
+}
+
+:root {
+  --primary-color: #{$primary};
+  --secondary-color: #{$secondary};
+  --text-color: #{$text-color};
+  --card-bg-color: #{$card-bg-color};
+  --icon-bg-color: #{$icon-bg-color};
+  --icon-border-color: #{$icon-border-color};
+  --background-color: #{$background-color};
+  --background-darkgray: #{$background-darkgray};
+  --light-font-color: #{$light-font-color};
+  --hover-primary: #{$hover-primary};
+
+  // Status Colors
+  --success-color: #{$success-color};
+  --success-bg: #{$success-bg};
+  --warning-color: #{$warning-color};
+  --warning-bg: #{$warning-bg};
+  --danger-color: #{$danger-color};
+  --danger-bg: #{$danger-bg};
+
+  // Icon Gradients
+  --services-gradient: linear-gradient(135deg, #{$services-gradient-start}, #{$services-gradient-end});
+  --money-gradient: linear-gradient(135deg, #{$money-gradient-start}, #{$money-gradient-end});
+  --loyalty-gradient: linear-gradient(135deg, #{$loyalty-gradient-start}, #{$loyalty-gradient-end});
+  --member-gradient: linear-gradient(135deg, #{$member-gradient-start}, #{$member-gradient-end});
+
+  --padding: 1rem;
+  --border-radius: 16px;
+  --time-transition: 0.3s ease-in-out;
+  --line-height: 1.7;
+  --font-size-small: 0.8rem;
+  --box-shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+  --dark: #{$dark};
+  --light: #{$light};
+}
+
+body {
+  background-color: var(--background-color) !important;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.light-theme body {
+  background-color: #f5f5f5 !important;
+}
+
+
+.head-of-section {
+  font-weight: 700;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  text-align: left;
+}
+
+.head-of-section h2 {
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.head-of-section p {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-bottom: 0;
+}
+
+.services-icon {
+  background: var(--services-gradient);
+}
+
+.money-icon {
+  background: var(--money-gradient);
+}
+
+.loyalty-icon {
+  background: var(--loyalty-gradient);
+}
+
+.member-icon {
+  background: var(--member-gradient);
+}

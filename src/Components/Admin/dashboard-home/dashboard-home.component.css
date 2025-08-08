@@ -1,0 +1,1887 @@
+@media (max-width: 480px) {
+  .countries-traffic-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .countries-section,
+  .traffic-section {
+    width: 100%;
+    margin: 0;
+  }
+}
+/* =====================================
+   Dashboard Home Component Styles
+   Using theme variables from styles.scss
+   ===================================== */
+
+.dashboard-container {
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  min-height: 100vh;
+  color: var(--text-primary);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+/* Professional section spacing for dashboard */
+.dashboard-section {
+  margin-bottom: 32px;
+  padding: 24px 28px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 2px 16px rgba(30, 34, 90, 0.07);
+  border: 1px solid #e5e7eb;
+}
+
+.dashboard-section:not(:last-child) {
+  margin-bottom: 32px;
+}
+
+/* Reduce gap between stacked sections on mobile */
+@media (max-width: 768px) {
+  .dashboard-section {
+    margin-bottom: 20px;
+    padding: 16px 12px;
+    border-radius: 12px;
+  }
+}
+
+/* =====================================
+   Dashboard Header
+   ===================================== */
+.dashboard-header {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.5rem 2rem;
+  margin: -1.5rem -1.5rem 2rem -1.5rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-left {
+  flex: 1;
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dashboard-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--hover-bg);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.theme-toggle-btn.dark {
+  background: var(--primary-color);
+  color: white;
+}
+
+.theme-icon {
+  font-size: 1.2rem;
+}
+
+/* =====================================
+   Top Row Layout - Full Width Revenue Chart
+   ===================================== */
+.top-row {
+  display: grid;
+  grid-template-columns: 1fr; /* Full width for revenue chart */
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  align-items: stretch;
+}
+
+/* Full Width Revenue Section */
+.revenue-section.full-width {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.revenue-chart {
+  min-height: 450px;
+}
+
+/* Chart.js Canvas Styling */
+canvas {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 8px;
+}
+
+#revenueChart {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+#customerChart,
+#serviceTypesChart {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  margin-top: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+/* Service Icon Styling */
+.service-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon-large {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* D2D Car Services Specific Styling */
+.chart-card .card-header h3 {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.revenue-stats .budget-value,
+.revenue-stats .payout-value {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+/* Countries Row - Full Width */
+.countries-row {
+  margin-bottom: 1rem; /* Reduced from 2rem */
+}
+
+.countries-card {
+  width: 100%;
+}
+
+/* =====================================
+   Countries + Traffic Row Layout (col-8 + col-4)
+   ===================================== */
+
+@media (max-width: 768px) {
+  .countries-traffic-row {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: 1rem;
+  }
+  .countries-section {
+    margin-bottom: 0;
+  }
+  .traffic-section {
+    margin-top: 0;
+  }
+}
+
+.countries-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.traffic-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Countries Content Grid (Countries List + Map) */
+.countries-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* col-4 + col-4 within the col-8 */
+  gap: 1.5rem;
+  padding: 1.2rem;
+  flex: 1; /* Takes up remaining space in the flex container */
+  align-items: stretch; /* Ensures equal height for grid items */
+}
+
+.countries-list-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.map-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* =====================================
+   Countries + Traffic Row Layout (col-8 + col-4)
+   ===================================== */
+.countries-traffic-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* col-8 + col-4 */
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+  align-items: stretch; /* Ensures equal height for countries and traffic sections */
+}
+
+/* =====================================
+   Charts and Tables Layout
+   ===================================== */
+.charts-row,
+.tables-row,
+.bottom-row {
+  display: grid;
+  gap: 0.8rem; /* Reduced from 1.5rem */
+  margin-bottom: 1rem; /* Reduced from 2rem */
+  align-items: stretch; /* Ensures equal height for all grid items */
+}
+
+.charts-row {
+  grid-template-columns: 1fr 1fr 1fr; /* Three equal columns: Recent Sales, Orders Status, Recent Activity */
+}
+
+.tables-row {
+  /* Latest Orders (wider) and Popular Products */
+  width: 100%;
+  max-width: 100%;
+  flex: 2;
+  min-width: 0;
+}
+
+.bottom-row {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* =====================================
+   Card Base Styles
+   ===================================== */
+.chart-card,
+.table-card {
+  background: var(--bg-primary);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensures cards take full available height */
+}
+
+.chart-card:hover,
+.table-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 25px var(--shadow);
+}
+
+.card-header h3 {
+  font-size: 1.1rem; /* Slightly larger and more readable */
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Modern font stack */
+}
+
+.card-header {
+  padding: 1.2rem 1.2rem 0.8rem 1.2rem; /* Reduced padding for more compact look */
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-secondary);
+}
+
+.card-header h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* =====================================
+   Revenue Chart
+   ===================================== */
+.revenue-chart {
+  min-height: 400px;
+}
+
+.chart-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tab-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.chart-content {
+  padding: 1.2rem; /* Reduced from 1.5rem for more compact layout */
+  flex: 1; /* Takes up remaining space in the flex container */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
+.revenue-stats {
+  display: flex;
+  gap: 2rem; /* Reduced from 3rem */
+  margin-bottom: 1.5rem; /* Reduced from 2rem */
+}
+
+.budget-info,
+.payouts-info {
+  flex: 1;
+}
+
+.budget-label,
+.payout-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.budget-value,
+.payout-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.budget-change,
+.payout-change {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.budget-change.positive {
+  color: var(--success-color);
+}
+
+.payout-change.negative {
+  color: var(--danger-color);
+}
+
+.budget-note,
+.payout-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.revenue-chart-bars {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+  height: 200px;
+  margin-bottom: 2rem;
+  padding: 1rem 0;
+}
+
+.chart-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  height: 100%;
+  position: relative;
+}
+
+.bar-positive,
+.bar-negative {
+  width: 80%;
+  border-radius: 4px 4px 0 0;
+  transition: all 0.3s ease;
+}
+
+.bar-positive {
+  background: var(--primary-color);
+  margin-bottom: 2px;
+}
+
+.bar-negative {
+  background: var(--warning-color);
+  margin-bottom: auto;
+}
+
+.bar-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.add-amount-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.add-amount-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 59, 59, 0.3);
+}
+
+/* =====================================
+   Countries Card
+   ===================================== */
+.countries-content {
+  padding: 1.2rem; /* Reduced from 1.5rem for more compact layout */
+}
+
+.export-btn {
+  padding: 0.5rem 1rem;
+  background: var(--success-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.export-btn:hover {
+  background: var(--success-color);
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.sales-summary {
+  margin-bottom: 1.5rem;
+}
+
+.sales-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
+
+.sales-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  font-family: "Inter", sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.sales-unit {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+}
+
+.countries-list {
+  margin-bottom: 2rem;
+}
+
+.country-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.country-item:last-child {
+  border-bottom: none;
+}
+
+.country-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.country-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  animation: pulseDot 1.5s infinite;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes pulseDot {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.5);
+    -webkit-transform: scale(2.5);
+    -moz-transform: scale(2.5);
+    -ms-transform: scale(2.5);
+    -o-transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+.country-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: -0.01em;
+}
+
+.country-sales {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+}
+
+.world-map-placeholder {
+  text-align: center;
+  padding: 2rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border: 2px dashed var(--border-color);
+}
+
+.map-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+/* =====================================
+   Real World Map Styles
+   ===================================== */
+.world-map-container {
+  position: relative;
+  height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px var(--shadow);
+  border: 1px solid var(--border-color);
+}
+
+.world-map {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+.map-overlay {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 0.8rem; /* Reduced padding */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 180px; /* Reduced width */
+  font-family: "Inter", sans-serif;
+  transition: all 0.3s ease; /* Smooth theme transition */
+}
+
+.dark-theme .map-overlay {
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+}
+
+.map-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Reduced gap */
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 0.65rem; /* Smaller font */
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px; /* Reduced letter spacing */
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+}
+
+.stat-value {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.75rem; /* Smaller font */
+  font-family: "Inter", sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* =====================================
+   Leaflet Map Custom Styles
+   ===================================== */
+::ng-deep .custom-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+::ng-deep .marker-container {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+::ng-deep .marker-container:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  z-index: 1000;
+}
+
+/* Leaflet Controls Theme Support */
+::ng-deep .leaflet-control-zoom a {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+  font-family: "Inter", sans-serif !important;
+  font-size: 12px !important; /* Smaller font */
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .leaflet-control-zoom a:hover {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+::ng-deep .leaflet-control-attribution {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 9px !important; /* Smaller font */
+  font-family: "Inter", sans-serif !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .dark-theme .leaflet-control-attribution {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  color: white !important;
+}
+
+::ng-deep .custom-popup .leaflet-popup-content-wrapper {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  font-family: "Inter", sans-serif !important;
+  font-size: 0.7rem !important; /* Smaller font for popups */
+}
+
+::ng-deep .custom-popup .leaflet-popup-tip {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+}
+
+::ng-deep .map-popup {
+  font-family: "Inter", sans-serif;
+  padding: 0.5rem;
+}
+
+::ng-deep .map-popup h3 {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+::ng-deep .map-legend {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  font-family: "Inter", sans-serif;
+}
+
+::ng-deep .dark-theme .map-legend {
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+::ng-deep .legend-content h4 {
+  margin: 0 0 1rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+::ng-deep .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+}
+
+::ng-deep .legend-item:last-child {
+  margin-bottom: 0;
+}
+
+::ng-deep .legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+::ng-deep .leaflet-control-zoom {
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+::ng-deep .leaflet-control-zoom a {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  font-weight: bold !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .leaflet-control-zoom a:hover {
+  background: var(--primary-color) !important;
+  color: white !important;
+  transform: scale(1.1);
+}
+
+::ng-deep .dark-theme .leaflet-control-zoom a {
+  background: rgba(0, 0, 0, 0.8) !important;
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* =====================================
+   Map Animation Effects
+   ===================================== */
+@keyframes mapFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.world-map-container {
+  animation: mapFadeIn 0.8s ease-out;
+}
+
+::ng-deep .custom-marker {
+  animation: markerPulse 2s infinite;
+}
+
+@keyframes markerPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* =====================================
+   Responsive Map Styles
+   ===================================== */
+@media (max-width: 768px) {
+  .world-map-container {
+    height: 300px;
+  }
+
+  .map-overlay {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-top: 1rem;
+    width: 100%;
+    background: var(--bg-primary);
+  }
+
+  .map-stats {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .stat-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.25rem;
+  }
+
+  ::ng-deep .map-legend {
+    font-size: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  ::ng-deep .legend-item {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .world-map-container {
+    height: 250px;
+  }
+
+  ::ng-deep .marker-container {
+    font-size: 8px !important;
+  }
+
+  .map-stats {
+    flex-direction: column;
+  }
+}
+
+/* =====================================
+   Enhanced Traffic Analytics Section
+   ===================================== */
+.traffic-content {
+  padding: 1.2rem;
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+  flex: 1; /* Takes up remaining space in the flex container */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
+.traffic-period {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+/* Traffic Summary - REMOVED */
+
+/* Traffic Sources List */
+.traffic-sources {
+  margin-bottom: 1.5rem;
+}
+
+.source-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.source-item:last-child {
+  border-bottom: none;
+}
+
+.source-info {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex: 1;
+}
+
+.source-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.search-engine-icon {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+}
+
+.direct-icon {
+  background: linear-gradient(135deg, #4ecdc4, #44a08d);
+}
+
+.social-icon {
+  background: linear-gradient(135deg, #a8edea, #fed6e3);
+  color: #333;
+}
+
+.source-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.source-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.source-percentage {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.source-value {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: right;
+}
+
+/* Enhanced Chart */
+.traffic-chart-enhanced {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.chart-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.traffic-bars {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  height: 120px;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+
+.traffic-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.bar-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  height: 80px;
+  width: 100%;
+  max-width: 24px;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.search-engine-bar {
+  background: linear-gradient(0deg, #ff6b6b, #ff8e8e);
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  transition: all 0.3s ease;
+}
+
+.direct-traffic-bar {
+  background: linear-gradient(0deg, #4ecdc4, #6ed5d0);
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.social-bar {
+  background: linear-gradient(0deg, #a8edea, #c7f0ed);
+  width: 100%;
+  border-radius: 0 0 4px 4px;
+  transition: all 0.3s ease;
+}
+
+.traffic-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  font-weight: 500;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Chart Legend */
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-dot.search-engine {
+  background: #ff6b6b;
+}
+
+.legend-dot.direct-traffic {
+  background: #4ecdc4;
+}
+
+.legend-dot.social-media {
+  background: #a8edea;
+}
+
+/* Hover Effects */
+.source-item:hover {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  margin: 0 -0.5rem;
+  padding: 0.8rem 0.5rem;
+}
+
+.bar-stack:hover .search-engine-bar,
+.bar-stack:hover .direct-traffic-bar,
+.bar-stack:hover .social-bar {
+  transform: scaleY(1.1);
+}
+.traffic-legend {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.legend-dot.search-engine {
+  background: var(--primary-color);
+}
+
+.legend-dot.direct-traffic {
+  background: var(--success-color);
+}
+
+.traffic-chart {
+  padding: 1.5rem;
+  display: flex;
+  align-items: end;
+  gap: 2rem;
+  height: 200px;
+}
+
+.traffic-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.search-engine-bar,
+.direct-traffic-bar {
+  width: 60%;
+  border-radius: 4px 4px 0 0;
+  margin-bottom: 2px;
+}
+
+.search-engine-bar {
+  background: var(--primary-color);
+}
+
+.direct-traffic-bar {
+  background: var(--success-color);
+  margin-bottom: auto;
+}
+
+.traffic-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* =====================================
+   Recent Sales
+   ===================================== */
+.view-all {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.view-all:hover {
+  text-decoration: underline;
+}
+
+.sales-list {
+  padding: 1.5rem;
+  flex: 1; /* Takes up remaining space in the flex container */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
+.sale-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sale-item:last-child {
+  border-bottom: none;
+}
+
+.sale-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.product-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.sale-details h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem 0;
+}
+
+.sale-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.sale-amount {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* =====================================
+   Data Tables
+   ===================================== */
+.sort-options {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.sort-select {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.5rem;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.table-container {
+  overflow-x: auto;
+  flex: 1; /* Takes up remaining space in the flex container */
+  display: flex;
+  flex-direction: column;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  background: var(--bg-secondary);
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.875rem;
+}
+
+.order-id {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.shop-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.shop-icon {
+  font-size: 1rem;
+}
+
+.amount {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-pending {
+  background: var(--warning-bg);
+  color: var(--warning-color);
+}
+
+.status-delivered {
+  background: var(--success-bg);
+  color: var(--success-color);
+}
+
+.status-new {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.status-shipping {
+  background: rgba(139, 69, 19, 0.1);
+  color: #8b4513;
+}
+
+.status-out-delivered {
+  background: var(--danger-bg);
+  color: var(--danger-color);
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.rating-value {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.no-rating {
+  color: var(--text-muted);
+}
+
+/* =====================================
+   Products Table
+   ===================================== */
+.products-list {
+  padding: 1.5rem;
+  flex: 1; /* Takes up remaining space in the flex container */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
+.product-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.product-item:last-child {
+  border-bottom: none;
+}
+
+.product-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.product-thumb {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.product-details h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.product-stats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.product-price {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.add-cart-btn {
+  background: var(--primary-color);
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.add-cart-btn:hover {
+  background: var(--primary-hover);
+  transform: scale(1.1);
+}
+
+/* =====================================
+   Orders Status
+   ===================================== */
+.date-range {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.status-list {
+  padding: 1.5rem;
+  flex: 1; /* Takes up remaining space in the flex container */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
+.status-item {
+  margin-bottom: 1.5rem;
+}
+
+.status-item:last-child {
+  margin-bottom: 0;
+}
+
+.status-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.status-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.status-count {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.status-bar {
+  height: 8px;
+  background: var(--bg-secondary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* =====================================
+   Recent Activity
+   ===================================== */
+.view-more {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.view-more:hover {
+  text-decoration: underline;
+}
+
+.activity-list {
+  padding: 1.5rem;
+  flex: 1; /* Takes up remaining space in the flex container */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-text {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  line-height: 1.5;
+}
+
+.activity-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* =====================================
+   Insights
+   ===================================== */
+.insight-period {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.insights-list {
+  padding: 1.5rem;
+}
+
+.insight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.insight-item:last-child {
+  border-bottom: none;
+}
+
+.insight-icon {
+  font-size: 1rem;
+  margin-top: 0.125rem;
+}
+
+.insight-text {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+/* =====================================
+   Responsive Design - Enhanced for 2x2 Layout
+   ===================================== */
+@media (max-width: 1200px) {
+  .charts-row {
+    grid-template-columns: 1fr; /* Stack all three charts vertically on medium screens */
+  }
+
+  .tables-row {
+    grid-template-columns: 1fr; /* Stack tables vertically */
+  }
+
+  .bottom-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Medium screens - two column layout for charts */
+@media (min-width: 769px) and (max-width: 1440px) {
+  .charts-row {
+    grid-template-columns: 1fr 1fr 1fr; /* Keep three columns on larger medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 0rem;
+  }
+
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  /* Switch to vertical layout for mobile */
+  .stats-row {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto);
+    gap: 1rem;
+  }
+
+  .stat-card {
+    padding: 1.5rem;
+    min-height: 120px;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+  }
+
+  .stat-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+
+  .bottom-row {
+    grid-template-columns: 1fr;
+  }
+
+  .revenue-stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .traffic-legend {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .table-container {
+    font-size: 0.75rem;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-title {
+    font-size: 1.5rem;
+  }
+
+  .stats-row {
+    gap: 0.75rem;
+  }
+
+  .stat-card {
+    padding: 1.25rem;
+    min-height: 100px;
+  }
+
+  .stat-value {
+    font-size: 1.75rem;
+  }
+
+  .stat-title {
+    font-size: 0.7rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .stat-change {
+    font-size: 0.8rem;
+  }
+
+  .stat-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+    margin-left: 1rem;
+  }
+
+  .card-header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .chart-content,
+  .sales-list,
+  .products-list,
+  .status-list,
+  .activity-list,
+  .insights-list {
+    padding: 1rem;
+  }
+}
+
+/* =====================================
+   Large Screen Enhancements (≥1400px)
+   ===================================== */
+@media (min-width: 1400px) {
+  .stats-row {
+    gap: 2rem;
+  }
+
+  .stat-card {
+    padding: 2.5rem 2rem;
+    min-height: 160px;
+  }
+
+  .stat-value {
+    font-size: 1rem;
+  }
+
+  .stat-title {
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .stat-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+    border-radius: 20px;
+  }
+} /* =====================================
+   Animation and Transitions
+   ===================================== */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-card,
+.chart-card,
+.table-card {
+  animation: slideInUp 0.6s ease-out;
+}
+
+.stat-card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.stat-card:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.stat-card:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+/* =====================================
+   Dark Theme Specific Adjustments
+   ===================================== */
+.dark-theme .chart-bar:hover .bar-positive,
+.dark-theme .chart-bar:hover .bar-negative {
+  opacity: 0.8;
+}
+
+.dark-theme .status-bar {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .world-map-placeholder {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* =====================================
+   Focus States for Accessibility
+   ===================================== */
+button:focus,
+select:focus,
+a:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* =====================================
+   Print Styles
+   ===================================== */
+@media print {
+  .theme-toggle-btn,
+  .add-amount-btn,
+  .export-btn,
+  .add-cart-btn {
+    display: none;
+  }
+
+  .dashboard-container {
+    background: white;
+    color: black;
+  }
+
+  .stat-card,
+  .chart-card,
+  .table-card {
+    border: 1px solid #ddd;
+    box-shadow: none;
+  }
+}
+
+.map-overlay {
+  display: none;
+}
+
+span.color {
+  width: 11px;
+  height: 10px;
+  background: inherit;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 10;
+  box-shadow: 0 0 2px #0000004d;
+  opacity: 1;
+  left: 2px;
+  top: 18px;
+}

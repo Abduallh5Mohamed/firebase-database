@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customers Dashboard</title>
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    /* Customers Section - Unified Styling */
+    .customers-section {
+      background-color: #1a1a1a;
+      padding: 2rem;
+      min-height: 100vh;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #ff3b3b, transparent);
+      border-radius: 2px;
+    }
+
+    .section-subtitle {
+      color: #999;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      font-weight: 300;
+    }
+
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+      text-align: center;
+      border: 1px solid #333;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(255, 59, 59, 0.2);
+    }
+
+    .contact-buttons {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .contact-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 59, 59, 0.2);
+      color: #ff3b3b;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-btn:hover {
+      background: #ff3b3b;
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .remove-btn-icon {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #888;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .remove-btn-icon:hover {
+      background: #ff4444;
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .profile-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ff3b3b;
+      margin: 20px auto 16px;
+      display: block;
+    }
+
+    .customer-name {
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 20px 0;
+      letter-spacing: 0.5px;
+    }
+
+    .contact-info {
+      margin-bottom: 16px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 8px 0;
+      padding: 8px 12px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .contact-icon {
+      color: #ff3b3b;
+      font-size: 14px;
+      width: 16px;
+      margin-right: 12px;
+    }
+
+    .contact-text {
+      color: #ccc;
+      font-size: 0.9rem;
+      flex: 1;
+    }
+
+    .join-date {
+      font-size: 0.8rem;
+      color: #666;
+      text-align: center;
+      margin: 16px 0;
+      font-style: italic;
+    }
+
+    .action-footer {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .profile-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+      background: #ff3b3b;
+      color: white;
+    }
+
+    .profile-btn:hover {
+      background: #e03030;
+      transform: translateY(-2px);
+    }
+
+    /* Perfect Responsive Design */
+    @media (max-width: 1400px) {
+      .cards-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .cards-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .customers-section {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .profile-img {
+        width: 65px;
+        height: 65px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .cards-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .card {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      .customers-section {
+        padding: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .section-subtitle {
+        font-size: 1rem;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .profile-img {
+        width: 60px;
+        height: 60px;
+      }
+
+      .action-footer {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .profile-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <section class="customers-section">
+    <h2 class="section-title">OUR VALUED CUSTOMERS</h2>
+    <p class="section-subtitle">We're proud to serve these amazing individuals</p>
+
+    <div class="cards-container" id="customersContainer">
+      <!-- Customer cards will be dynamically generated here -->
+    </div>
+  </section>
+
+  <script>
+    // Customer data
+    const customers = [
+      {
+        id: 1,
+        name: 'Ahmed Hassan',
+        membershipType: 'Premium',
+        totalOrders: 15,
+        image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+        joined: 'Jan 2024',
+        totalSpent: '₹12,500',
+        location: 'Cairo, Egypt',
+        status: 'Active',
+      },
+      {
+        id: 2,
+        name: 'Fatima El-Sayed',
+        membershipType: 'Gold',
+        totalOrders: 8,
+        image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
+        joined: 'Feb 2024',
+        totalSpent: '₹8,200',
+        location: 'Alexandria, Egypt',
+        status: 'Active',
+      },
+      {
+        id: 3,
+        name: 'Mohamed Ali',
+        membershipType: 'Premium',
+        totalOrders: 22,
+        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+        joined: 'Mar 2024',
+        totalSpent: '₹18,900',
+        location: 'Giza, Egypt',
+        status: 'Active',
+      },
+      {
+        id: 4,
+        name: 'Nour Ibrahim',
+        membershipType: 'Silver',
+        totalOrders: 12,
+        image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+        joined: 'Apr 2024',
+        totalSpent: '₹6,800',
+        location: 'Mansoura, Egypt',
+        status: 'Inactive',
+      },
+      {
+        id: 5,
+        name: 'Omar Mahmoud',
+        membershipType: 'Gold',
+        totalOrders: 18,
+        image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
+        joined: 'May 2024',
+        totalSpent: '₹14,300',
+        location: 'Aswan, Egypt',
+        status: 'Active',
+      },
+      {
+        id: 6,
+        name: 'Yasmin Farouk',
+        membershipType: 'Silver',
+        totalOrders: 9,
+        image: 'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=150&h=150&fit=crop&crop=face',
+        joined: 'Jun 2024',
+        totalSpent: '₹5,600',
+        location: 'Luxor, Egypt',
+        status: 'Active',
+      },
+      {
+        id: 7,
+        name: 'Karim Adel',
+        membershipType: 'Premium',
+        totalOrders: 25,
+        image: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&h=150&fit=crop&crop=face',
+        joined: 'Jul 2024',
+        totalSpent: '₹22,100',
+        location: 'Tanta, Egypt',
+        status: 'Active',
+      },
+      {
+        id: 8,
+        name: 'Mariam Youssef',
+        membershipType: 'Gold',
+        totalOrders: 14,
+        image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face',
+        joined: 'Aug 2024',
+        totalSpent: '₹9,750',
+        location: 'Ismailia, Egypt',
+        status: 'Active',
+      },
+    ];
+
+    // Function to create customer card HTML
+    function createCustomerCard(customer) {
+      return `
+                <div class="card" data-customer-id="${customer.id}">
+                    <!-- Contact buttons in top right -->
+                    <div class="contact-buttons">
+                        <button class="contact-btn phone-btn" onclick="callCustomer(${customer.id})" title="Contact">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <button class="contact-btn email-btn" onclick="emailCustomer(${customer.id})" title="Orders">
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
+                    </div>
+
+                    <!-- Remove button (icon only) -->
+                    <button class="remove-btn-icon" onclick="removeCustomer(${customer.id})" title="Remove Customer">
+                        <i class="fas fa-times"></i>
+                    </button>
+
+                    <!-- Profile image -->
+                    <img src="${customer.image}" class="profile-img" alt="${customer.name}">
+
+                    <!-- Name -->
+                    <h5 class="customer-name">${customer.name}</h5>
+
+                    <!-- Customer info with icons -->
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-crown contact-icon"></i>
+                            <span class="contact-text">${customer.membershipType}</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-dollar-sign contact-icon"></i>
+                            <span class="contact-text">${customer.totalSpent}</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-shopping-bag contact-icon"></i>
+                            <span class="contact-text">${customer.totalOrders} Orders</span>
+                        </div>
+                    </div>
+
+                    <!-- Join date -->
+                    <div class="join-date">Member Since: ${customer.joined}</div>
+
+                    <!-- Action buttons -->
+                    <div class="action-footer">
+                        <button class="profile-btn" onclick="viewCustomerProfile(${customer.id})">PROFILE</button>
+                    </div>
+                </div>
+            `;
+    }
+
+    // Function to render all customers
+    function renderCustomers() {
+      const container = document.getElementById('customersContainer');
+      container.innerHTML = customers.map(customer => createCustomerCard(customer)).join('');
+    }
+
+    // Function to find customer by ID
+    function findCustomer(id) {
+      return customers.find(customer => customer.id === id);
+    }
+
+    // Customer action functions
+    function callCustomer(customerId) {
+      const customer = findCustomer(customerId);
+      if (customer) {
+        console.log('Contacting customer:', customer.name);
+        alert(`Contacting ${customer.name} - ${customer.membershipType} member`);
+      }
+    }
+
+    function emailCustomer(customerId) {
+      const customer = findCustomer(customerId);
+      if (customer) {
+        console.log('Viewing orders for customer:', customer.name);
+        alert(`Viewing ${customer.totalOrders} orders for ${customer.name}`);
+      }
+    }
+
+    function viewCustomerProfile(customerId) {
+      const customer = findCustomer(customerId);
+      if (customer) {
+        console.log('Viewing profile of customer:', customer.name);
+        alert(`Opening profile for ${customer.name}\nMembership: ${customer.membershipType}\nLocation: ${customer.location}\nTotal Spent: ${customer.totalSpent}`);
+      }
+    }
+
+    function removeCustomer(customerId) {
+      const customer = findCustomer(customerId);
+      if (customer) {
+        const confirmRemove = confirm(`Are you sure you want to remove ${customer.name}?`);
+        if (confirmRemove) {
+          const index = customers.findIndex(c => c.id === customerId);
+          if (index > -1) {
+            customers.splice(index, 1);
+            console.log('Customer removed:', customer.name);
+            renderCustomers(); // Re-render the updated list
+          }
+        }
+      }
+    }
+
+    // Initialize the page when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function () {
+      renderCustomers();
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,230 @@
+<div class="financial-dashboard">
+  <!-- Header Section -->
+  <h2 class="section-titles">FINANCIAL DASHBOARD</h2>
+  <p class="section-subtitles">Track your business performance and financial metrics</p>
+
+
+  <!-- Main Dashboard Grid -->
+  <div class="dashboard-grid">
+
+    <!-- Yearly Targets Section -->
+    <div class="section targets-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="section-icon">🎯</i>
+          Yearly Targets
+        </h2>
+        <p class="section-subtitle">Targets Of The Year</p>
+      </div>
+
+      <div class="targets-container">
+        <div class="target-card" onclick="updateTarget(this, 'money')">
+          <div class="target-icon money-icon">
+            <i class="icon-symbol">💰</i>
+          </div>
+          <div class="target-content">
+            <div class="target-label">Revenue</div>
+            <div class="target-value"><span id="moneyValue">ليس رقماً</span></div>
+            <div class="progress-wrapper">
+              <div class="progress-track">
+                <div class="progress-fill progress-blue" id="moneyProgress" style="width: 0%"></div>
+              </div>
+              <div class="progress-percentage" id="moneyPercentage">83%</div>
+            </div>
+          </div>
+          <div class="target-action">
+            <button class="action-btn">View Details</button>
+          </div>
+        </div>
+
+        <div class="target-card" onclick="updateTarget(this, 'projects')">
+          <div class="target-icon projects-icon">
+            <i class="icon-symbol">📊</i>
+          </div>
+          <div class="target-content">
+            <div class="target-label">Projects</div>
+            <div class="target-value"><span id="projectsValue">25</span></div>
+            <div class="progress-wrapper">
+              <div class="progress-track">
+                <div class="progress-fill progress-orange" id="projectsProgress" style="width: 0%"></div>
+              </div>
+              <div class="progress-percentage" id="projectsPercentage">64%</div>
+            </div>
+          </div>
+          <div class="target-action">
+            <button class="action-btn">View Details</button>
+          </div>
+        </div>
+
+        <div class="target-card" onclick="updateTarget(this, 'team')">
+          <div class="target-icon team-icon">
+            <i class="icon-symbol">👥</i>
+          </div>
+          <div class="target-content">
+            <div class="target-label">Team Growth</div>
+            <div class="target-value"><span id="teamValue">13</span> Members</div>
+            <div class="progress-wrapper">
+              <div class="progress-track">
+                <div class="progress-fill progress-green" id="teamProgress" style="width: 0%"></div>
+              </div>
+              <div class="progress-percentage" id="teamPercentage">82%</div>
+            </div>
+          </div>
+          <div class="target-action">
+            <button class="action-btn">View Details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="section statistics-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="section-icon">📈</i>
+          Support Tickets
+        </h2>
+        <p class="section-subtitle">Everything About Support Tickets</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card total-card" onclick="animateCard(this, 'total')">
+          <div class="stat-icon-container">
+            <div class="stat-icon total-icon">📋</div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number" id="totalTickets">2,403</div>
+            <div class="stat-label">Total Tickets</div>
+            <div class="stat-trend positive">+12% this month</div>
+          </div>
+        </div>
+
+        <div class="stat-card pending-card" onclick="animateCard(this, 'pending')">
+          <div class="stat-icon-container">
+            <div class="loading-circle">
+              <div class="loading-spinner">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number" id="pendingTickets">500</div>
+            <div class="stat-label">Pending</div>
+            <div class="stat-trend neutral">Processing...</div>
+          </div>
+        </div>
+
+        <div class="stat-card closed-card" onclick="animateCard(this, 'closed')">
+          <div class="stat-icon-container">
+            <div class="success-circle">
+              <i class="check-icon">✓</i>
+            </div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number" id="closedTickets">1,900</div>
+            <div class="stat-label">Closed</div>
+            <div class="stat-trend positive">+5% this week</div>
+          </div>
+        </div>
+
+        <div class="stat-card deleted-card" onclick="animateCard(this, 'deleted')">
+          <div class="stat-icon-container">
+            <div class="error-circle">
+              <i class="x-icon">✖</i>
+            </div>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number" id="deletedTickets">100</div>
+            <div class="stat-label">Deleted</div>
+            <div class="stat-trend negative">-2% this week</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Metrics Section -->
+    <div class="section metrics-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="section-icon">💼</i>
+          Business Metrics
+        </h2>
+        <p class="section-subtitle">Key Performance Indicators</p>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-item">
+          <div class="metric-icon revenue-icon">💎</div>
+          <div class="metric-info">
+            <div class="metric-value">$125,430</div>
+            <div class="metric-label">Monthly Revenue</div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-icon customers-icon">🚗</div>
+          <div class="metric-info">
+            <div class="metric-value">1,245</div>
+            <div class="metric-label">Active Customers</div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-icon satisfaction-icon">⭐</div>
+          <div class="metric-info">
+            <div class="metric-value">4.8/5</div>
+            <div class="metric-label">Customer Satisfaction</div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-icon growth-icon">📈</div>
+          <div class="metric-info">
+            <div class="metric-value">+18%</div>
+            <div class="metric-label">Growth Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="section actions-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="section-icon">⚡</i>
+          Quick Actions
+        </h2>
+        <p class="section-subtitle">Frequently used actions</p>
+      </div>
+
+      <div class="actions-grid">
+        <button class="action-card">
+          <div class="action-icon">📊</div>
+          <div class="action-text">Generate Report</div>
+        </button>
+
+        <button class="action-card">
+          <div class="action-icon">💳</div>
+          <div class="action-text">Process Payments</div>
+        </button>
+
+        <button class="action-card">
+          <div class="action-icon">📧</div>
+          <div class="action-text">Send Invoices</div>
+        </button>
+
+        <button class="action-card">
+          <div class="action-icon">⚙️</div>
+          <div class="action-text">Settings</div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

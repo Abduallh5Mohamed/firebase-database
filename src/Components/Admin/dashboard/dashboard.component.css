@@ -1,0 +1,245 @@
+/* Modern Dashboard Layout */
+.dashboard-layout {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Content Area Styles */
+.content-area {
+  position: fixed;
+  top: 70px; /* Header height */
+  left: 280px; /* Sidebar width */
+  right: 0;
+  bottom: 0;
+  background: var(--bg-secondary);
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
+.content-area.sidebar-collapsed {
+  left: 70px; /* Collapsed sidebar width */
+}
+
+.content-wrapper {
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+}
+
+/* Empty Dashboard Content */
+.dashboard-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-dashboard {
+  text-align: center;
+  color: var(--text-secondary);
+  position: relative;
+  z-index: 1;
+  background: var(--bg-primary);
+  border-radius: 20px;
+  padding: 60px 40px;
+  box-shadow: 0 10px 30px var(--shadow), 0 1px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.empty-dashboard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px var(--shadow), 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Enhanced Dashboard Content Background */
+.dashboard-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--bg-primary) 0%,
+    var(--bg-secondary) 100%
+  );
+  position: relative;
+}
+
+.dashboard-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 20% 80%,
+      rgba(255, 59, 59, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(59, 130, 246, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      rgba(16, 185, 129, 0.05) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+}
+
+.empty-content {
+  padding: 20px;
+}
+
+.empty-icon {
+  font-size: 5rem;
+  color: #ff3b3be8;
+  margin-bottom: 30px;
+  opacity: 0.8;
+  animation: pulse 2s infinite;
+  text-shadow: 0 0 20px rgba(255, 59, 59, 0.3);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+.empty-dashboard h2 {
+  color: var(--text-primary);
+  margin-bottom: 15px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ff3b3be8, #d12626);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.empty-dashboard p {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Responsive Design - Mobile-first approach */
+@media (max-width: 480px) {
+  .dashboard-layout {
+    height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .content-area {
+    left: 0 !important;
+    top: 70px !important; /* Match header height exactly */
+    padding: 0;
+  }
+
+  .content-area.sidebar-collapsed {
+    left: 0 !important;
+  }
+
+  .content-wrapper {
+    padding: 10px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+  }
+
+  .empty-dashboard {
+    padding: 30px 20px;
+    margin: 10px;
+    border-radius: 15px;
+  }
+
+  .empty-dashboard h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+
+  .empty-dashboard p {
+    font-size: 1rem;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-area {
+    left: 0 !important;
+    top: 70px !important; /* Match header height exactly */
+  }
+
+  .content-area.sidebar-collapsed {
+    left: 0 !important;
+  }
+
+  .content-wrapper {
+    padding: 15px;
+    height: calc(100vh - 70px);
+  }
+
+  .empty-dashboard {
+    padding: 40px 25px;
+  }
+
+  .empty-dashboard h2 {
+    font-size: 2rem;
+  }
+
+  .empty-dashboard p {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .content-area {
+    left: 0 !important; /* Remove sidebar space on tablets too */
+    top: 70px !important;
+  }
+
+  .content-area.sidebar-collapsed {
+    left: 0 !important;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+  .content-area {
+    left: 0 !important;
+    top: 70px !important;
+    right: 0 !important;
+  }
+
+  .content-wrapper {
+    padding: 8px;
+    height: calc(100vh - 70px);
+  }
+
+  .empty-dashboard {
+    padding: 20px 15px;
+    margin: 5px;
+  }
+}

@@ -1,0 +1,43 @@
+<section class="services">
+  <div class="container services-container-card">
+    <div class="head-of-section text-left mb-4">
+      <h2>What We Offer</h2>
+      <p>Our Services</p>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div *ngFor="let service of services.slice(0, 3)" class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <div class="icon-circle mx-auto mb-3">
+              <img [src]="service.icon" alt="{{ service.title }}" class="img-fluid icon-img">
+            </div>
+            <h5 class="card-title">{{ service.title }}</h5>
+            <p class="card-text">{{ service.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Show More Cards (below) -->
+    <div *ngIf="showAll" class="row g-3 mb-3">
+      <div *ngFor="let service of services.slice(3)" class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <div class="icon-circle mx-auto mb-3">
+              <img [src]="service.icon" alt="{{ service.title }}" class="img-fluid icon-img">
+            </div>
+            <h5 class="card-title">{{ service.title }}</h5>
+            <p class="card-text">{{ service.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-danger" (click)="toggleShowAll()">
+        {{ showAll ? 'Show Less' : 'Show More' }}
+      </button>
+    </div>
+  </div>
+</section>

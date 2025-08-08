@@ -1,0 +1,121 @@
+<!-- stock.component.html -->
+<div class="stock-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <span class="logo-icon">🔧</span>
+      <span class="company-name"> Car Repair</span>
+    </div>
+    <h1 class="page-title">Stock</h1>
+    <div class="search-container">
+      <input type="text" placeholder="Search parts..." class="search-input" [(ngModel)]="searchText"
+        (keyup)="applyFilter()">
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card available">
+      <h3>Available Parts</h3>
+      <div class="stat-number">{{availableParts}}</div>
+      <div class="stat-label">
+        <span class="status-icon">✓</span>
+        Available
+      </div>
+    </div>
+
+    <div class="stat-card repair">
+      <h3>Parts on Order</h3>
+      <div class="stat-number">{{partsOnOrder}}</div>
+      <div class="stat-label">
+        <span class="status-icon">📦</span>
+        Ordered
+      </div>
+    </div>
+
+    <div class="stat-card in-repair">
+      <h3>Parts Used Today</h3>
+      <div class="stat-number">{{servicesToday}}</div>
+      <div class="stat-label">
+        <span class="status-icon">🔧</span>
+        Scheduled
+      </div>
+    </div>
+
+    <div class="stat-card urgent">
+      <h3>Emergency Calls</h3>
+      <div class="stat-number">{{emergencyCalls}}</div>
+      <div class="stat-label">
+        <span class="status-icon">🚨</span>
+        Urgent
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="content-grid">
+    <!-- Parts List -->
+      <div class="table-container">
+        <table class="parts-table">
+          <thead>
+            <tr>
+              <th>Part Name</th>
+              <th>Part Number</th>
+              <th>Quantity</th>
+              <th>Location</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let part of filteredPartsList" [class]="getRowClass(part.status)">
+              <td>{{part.name}}</td>
+              <td>{{part.partNumber}}</td>
+              <td>{{part.quantity}}</td>
+              <td>{{part.location}}</td>
+              <td>
+                <span class="status-badge" [class]="getStatusClass(part.status)">
+                  {{part.status}}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    <!-- Service Issues Chart -->
+    <div class="chart-section">
+      <h2>Common Parts & Costs</h2>
+
+      <!-- Bar Chart -->
+      <div class="chart-container">
+        <div class="chart-title">Parts Frequency</div>
+        <div class="bar-chart">
+          <div *ngFor="let service of serviceData" class="bar-item">
+            <div class="bar" [style.height.%]="service.percentage"></div>
+            <div class="bar-label">{{service.name}}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Cost Breakdown -->
+      <div class="service-costs">
+        <div *ngFor="let cost of serviceCosts" class="cost-item">
+          <div class="cost-info">
+            <span class="ball" [style.background]="cost.color"></span>
+            <div class="cost-circle" [style.background]="cost.color">
+              <span class="static-point"></span>
+            </div>
+            <div class="cost-details">
+              <div class="cost-name">{{cost.service}}</div>
+              <div class="cost-meta">{{cost.count}} Parts</div>
+            </div>
+          </div>
+          <div class="cost-amount">
+            <div class="amount">{{cost.amount}}</div>
+            <div class="avg">{{cost.average}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

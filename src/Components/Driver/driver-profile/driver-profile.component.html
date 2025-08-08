@@ -1,0 +1,93 @@
+<div class="container">
+  <!-- start header -->
+  
+  <!-- end header -->
+  <!-- start driver-profile -->
+  <div class="profile">
+    <div class="profile-header">
+      <h3>Personal Information</h3>
+      <a (click)="editProfileInfo()">
+        <i class="fa-solid fa-pen-to-square"></i>
+        {{ isEditable ? 'Cancel Edit' : 'Edit Profile' }}
+      </a>
+    </div>
+
+    <div class="profile-body">
+      <div class="image">
+        <img src="/assets/driver-profile-img/profile.jpg" alt="Profile User Image">
+      </div>
+
+      <form [formGroup]="profileForm">
+        <div class="row">
+          <div class="col-6">
+            <label for="full-name">Full Name</label>
+            <input type="text" id="full-name" formControlName="fullName" [disabled]="!isEditable">
+          </div>
+          <div class="col-6">
+            <label for="phone-number">Phone Number</label>
+            <input type="tel" id="phone-number" formControlName="phoneNumber" [disabled]="!isEditable">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <label for="email-address">Email Address</label>
+            <input type="email" id="email-address" formControlName="emailAddress" [disabled]="!isEditable">
+          </div>
+          <div class="col-6">
+            <label for="date-of-birth">Date Of Birth</label>
+            <input type="date" id="date-of-birth" formControlName="dateOfBirth" [disabled]="!isEditable">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <label for="home-address">Home Address</label>
+            <textarea id="home-address" formControlName="homeAddress" [disabled]="!isEditable" rows="3"
+              cols="5"></textarea>
+          </div>
+          <div class="col-6">
+            <label for="emergency-contact">Emergency Contact</label>
+            <input type="text" id="emergency-contact" formControlName="emergencyContact" [disabled]="!isEditable">
+
+            <label for="relationship">Relationship</label>
+            <input type="text" id="relationship" formControlName="relationship" [disabled]="!isEditable">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- end driver-profile -->
+  <!-- start statistics -->
+  <div class="stats-container px-0">
+    <div class="stat-card earnings">
+      <div class="stat-icon money-icon">
+        <i class="fa-solid fa-calendar-days"></i>
+      </div>
+      <div class="stat-value">2.5</div>
+      <div class="stat-label">Years Active</div>
+    </div>
+    <div class="stat-card trips">
+      <div class="stat-icon loyalty-icon">
+        <i class="fa-solid fa-star"></i>
+      </div>
+      <div class="stat-value">4.9</div>
+      <div class="stat-label">Average Rating</div>
+    </div>
+    <div class="stat-card hours">
+      <div class="stat-icon member-icon">
+        <i class="fa-solid fa-clock"></i>
+      </div>
+      <div class="stat-value">1,250</div>
+      <div class="stat-label">Hours Driven</div>
+    </div>
+    <div class="stat-card rating">
+      <div class="stat-icon services-icon">
+        <i class="fa-solid fa-medal"></i>
+      </div>
+      <div class="stat-value">340</div>
+      <div class="stat-label">Jobs Completed</div>
+    </div>
+  </div>
+  <!-- end statistics -->
+</div>

@@ -1,0 +1,137 @@
+.services {
+  background-color: var(--background-color);
+  margin-bottom: 4rem;
+}
+
+.card {
+  background-color: var(--card-bg-color);
+  border: none;
+  border-radius: var(--border-radius);
+  color: #fff;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s;
+  padding: 30px 60px;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.03);
+}
+
+@media (max-width: 992px) {
+  .card {
+    padding: 20px 40px;
+    margin: 1rem;
+  }
+
+  .head-of-section {
+    margin: 2rem;
+  }
+
+  .head-of-section p {
+    font-size: 1.8rem;
+  }
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 1.7rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  font-size: var(--font-medium);
+  color: var(--light-font-color);
+  line-height: var(--line-height);
+}
+
+.icon-circle {
+  width: 80px;
+  height: 80px;
+  background-color: var(--icon-bg-color);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  outline: 7px solid var(--hover-primary);
+}
+
+.icon-img {
+  width: 40px;
+  height: 40px;
+  filter: invert(100%) brightness(200%);
+}
+
+.btn-danger {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 0.575rem 1.4rem;
+  margin-top: 1.5rem;
+  border-radius: 0.375rem;
+  color: var(--dark);
+  display: inline-block;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(229, 57, 53, 0.10);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition:
+    transform var(--time-transition) cubic-bezier(0.22, 1, 0.36, 1),
+    background var(--time-transition),
+    color var(--time-transition),
+    box-shadow var(--time-transition) cubic-bezier(0.22, 1, 0.36, 1),
+    border var(--time-transition) ease;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  transform: translateY(-4px) scale(1.08) perspective(1px);
+  background: linear-gradient(90deg, var(--primary-color) 80%, var(--background-color) 100%);
+  border-radius: 0;
+  color: var(--dark);
+  outline: none;
+  border: 1px solid var(--hover-primary);
+}
+
+/* ::before and ::after as background overlay animations */
+.btn-danger::before,
+.btn-danger::after {
+  content: '';
+  position: absolute;
+  background-color: white;
+  top: 50%;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition:
+    all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: -1;
+}
+
+.btn-danger::after {
+  left: -2rem;
+}
+
+.btn-danger::before {
+  right: -2rem;
+}
+
+.btn-danger:hover::after {
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: var(--hover-primary);
+  border-radius: 0;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-danger:hover::before {
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-color: var(--hover-primary);
+  border-radius: 0;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+}

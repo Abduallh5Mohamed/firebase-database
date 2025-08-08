@@ -1,0 +1,34 @@
+.dashboard-container {
+  background: var(--bg-secondary);
+  min-height: 100vh;
+}
+
+.sales-overview-section {
+  padding: 32px;
+  background: var(--bg-secondary);
+}
+
+.container-fluid {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Dark theme adjustments */
+.dark-theme .dashboard-container,
+.dark-theme .sales-overview-section {
+  background: var(--bg-primary);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .sales-overview-section {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .sales-overview-section {
+    padding: 16px;
+  }
+}

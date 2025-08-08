@@ -1,0 +1,157 @@
+<section class="customers-section">
+  <h2 class="section-title">OUR VALUED CUSTOMERS</h2>
+  <p class="section-subtitle">We're proud to serve these amazing individuals</p>
+
+  <div class="container-fluid">
+    <div class="row g-4">
+      <div class="col-xl-3 col-lg-4 col-md-6 col-12" *ngFor="let customer of customers">
+        <div class="card">
+
+          <!-- Contact buttons in top right -->
+          <div class="contact-buttons">
+            <button class="contact-btn phone-btn" (click)="callCustomer(customer)" title="Contact">
+              <i class="fas fa-user"></i>
+            </button>
+            <button class="contact-btn email-btn" (click)="emailCustomer(customer)" title="Orders">
+              <i class="fas fa-shopping-cart"></i>
+            </button>
+          </div>
+
+          <!-- Remove button (icon only) -->
+          <button class="remove-btn-icon" (click)="removeCustomer(customer)" title="Remove Customer">
+            <i class="fas fa-times"></i>
+          </button>
+
+          <!-- Profile image -->
+          <img [src]="customer.image" class="profile-img" [alt]="customer.name">
+
+          <!-- Name -->
+          <h5 class="customer-name">{{ customer.name }}</h5>
+
+          <!-- Customer info with icons -->
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fas fa-crown contact-icon"></i>
+              <span class="contact-text">{{ customer.membershipType }}</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-dollar-sign contact-icon"></i>
+              <span class="contact-text">{{ customer.totalSpent }}</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-shopping-bag contact-icon"></i>
+              <span class="contact-text">{{ customer.totalOrders }} Orders</span>
+            </div>
+          </div>
+
+          <!-- Join date -->
+          <div class="join-date">Member Since: {{ customer.joined }}</div>
+
+          <!-- Action buttons -->
+          <div class="action-footer">
+            <button class="profile-btn" (click)="viewCustomerProfile(customer)">PROFILE</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div class="modal-overlay" [class.active]="showProfileModal" (click)="closeProfileModal()">
+    <div class="profile-modal" (click)="$event.stopPropagation()" *ngIf="selectedCustomer">
+      
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="header-content">
+          <i class="fas fa-user header-icon"></i>
+          <span class="header-title">Customer Profile</span>
+        </div>
+        <button class="close-btn" (click)="closeProfileModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Profile Content -->
+      <div class="profile-content">
+        
+        <!-- Profile Image and Rating -->
+        <div class="profile-header">
+          <div class="profile-image-container">
+            <img [src]="selectedCustomer.image" class="modal-profile-img" [alt]="selectedCustomer.name">
+            <div class="rating-badge">
+              <i class="fas fa-star"></i>
+              <span>4.6</span>
+            </div>
+          </div>
+          
+          <h3 class="profile-name">{{ selectedCustomer.name }}</h3>
+          <p class="profile-subtitle">Professional Driver</p>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+          <div class="stat-item">
+            <div class="stat-number">890</div>
+            <div class="stat-label">TOTAL TRIPS</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">4.6</div>
+            <div class="stat-label">RATING</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">3 Years</div>
+            <div class="stat-label">EXPERIENCE</div>
+          </div>
+        </div>
+
+        <!-- Details Section -->
+        <div class="details-section">
+          
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-id-card"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">LICENSE NUMBER</div>
+              <div class="detail-value">EG-DL-789012</div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-car"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">VEHICLE TYPE</div>
+              <div class="detail-value">SUV</div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-calendar"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">DRIVING SINCE</div>
+              <div class="detail-value">{{ selectedCustomer.joined }}</div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">EMAIL ADDRESS</div>
+              <div class="detail-value">{{ selectedCustomer.name.toLowerCase().replace(' ', '.') }}&#64;example.com</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</section>

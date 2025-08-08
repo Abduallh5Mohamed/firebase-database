@@ -1,0 +1,254 @@
+/* start navbar */
+.navbar {
+  width: 100%;
+  max-width: 92%;
+  margin: 0 auto;
+  background-color: var(--background-color);
+  height: 10vh;
+  padding: 1rem 1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.navbar .navbar-brand {
+  color: var(--light-font-color);
+  font-size: 1.5rem;
+  font-weight: bold;
+  white-space: nowrap;
+  flex-grow: 1;
+}
+
+.nav-link {
+  margin: 0 0.5rem;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  color: var(--light);
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.nav-link.active {
+  border-bottom: 2px solid var(--primary-color);
+  color: var(--light);
+  font-weight: 600;
+}
+
+.nav-link:hover {
+  background-color: var(--card-bg-color);
+  opacity: 0.85;
+  color: var(--light);
+  border-radius: 4px;
+}
+
+.navbar-toggler {
+  border-color: var(--light);
+}
+
+.navbar-toggler-icon {
+  filter: brightness(0) invert(1);
+}
+
+.navbar-collapse {
+  justify-content: flex-end !important;
+}
+
+@media (max-width: 992px) {
+  .navbar {
+    height: auto;
+    padding: 0.5rem 1rem;
+  }
+
+  .navbar-collapse {
+    width: 100%;
+  }
+
+  .navbar-nav {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-link {
+    margin: 0.25rem 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+
+  .nav-link {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+/* end navbar */
+
+
+/* start trip cards */
+.trip-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+  max-width: 95%;
+  margin: auto;
+}
+
+.trip-card {
+  background-color: var(--card-bg-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  transition: transform 0.2s ease;
+  border-left: 5px solid transparent;
+  color: var(--light);
+  display: flex;
+  flex-direction: column;
+  min-height: 30vh;
+  box-sizing: border-box;
+}
+
+.trip-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.trip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.driver-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.driver-avatar {
+  width: 36px;
+  height: 36px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--light);
+  font-size: 18px;
+}
+
+.driver-name {
+  font-weight: 600;
+  font-size: 1rem;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.status {
+  padding: 0.25rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.status.completed {
+  background-color: var(--success-bg);
+  color: var(--light-font-color);
+}
+
+.status.active {
+  background-color: rgb(111, 168, 232);
+  color: var(--dark);
+}
+
+.trip-cost {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ccc;
+  white-space: nowrap;
+}
+
+.trip-details {
+  padding-left: 1.8rem;
+  position: relative;
+  word-wrap: break-word;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  color: #aaa;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.location-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.location-dot.green {
+  background-color: #4caf50;
+}
+
+.location-dot.red {
+  background-color: #f44336;
+}
+
+.distance {
+  font-size: 0.85rem;
+  color: #999;
+  margin-left: 0.5rem;
+  white-space: nowrap;
+}
+
+.trip-footer {
+  font-size: 0.85rem;
+  color: #777;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.rating {
+  color: #ffb300;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+@media (max-width: 600px) {
+  .trip-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* end trip cards */
