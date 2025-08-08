@@ -86,7 +86,7 @@ export class AdminOrdersService {
 
       const docRef = await addDoc(collection(this.firestore, 'adminOrders'), newOrder);
       return docRef.id;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding admin order:', error);
       if (error.code === 'permission-denied') {
         throw new Error('Permission denied. Unable to create admin order. Please check account permissions.');

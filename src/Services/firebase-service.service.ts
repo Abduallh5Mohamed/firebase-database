@@ -203,7 +203,7 @@ export class FirebaseServiceService {
       }
       
       return docRef.id;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding service booking:', error);
       if (error.code === 'permission-denied') {
         throw new Error('Permission denied. Please check your account permissions or contact support.');
