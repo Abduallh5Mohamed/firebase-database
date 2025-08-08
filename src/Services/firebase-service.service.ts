@@ -75,46 +75,9 @@ export class FirebaseServiceService {
   private setupUserServicesListener(userId: string): void {
     try {
       const servicesRef = collection(this.firestore, 'services');
-      const userServicesQuery = query(
-        servicesRef,
-        where('userId', '==', userId),
-        orderBy('createdAt', 'desc')
-      );
-
-      onSnapshot(userServicesQuery, 
-        (snapshot) => {
-          const services: ServiceBooking[] = [];
-          const upcomingServices: UpcomingService[] = [];
-
-          snapshot.forEach((doc) => {
-            const data = doc.data() as ServiceBooking;
-            const service = { ...data, id: doc.id };
-            services.push(service);
-
-            // Add to upcoming services if status is scheduled or pending
-            if (service.status === 'scheduled' || service.status === 'pending') {
-              const upcoming = this.convertToUpcomingService(service);
-              upcomingServices.push(upcoming);
-            }
-          });
-
-          this.servicesSubject.next(services);
-          this.upcomingServicesSubject.next(upcomingServices);
-        },
-        (error: any) => {
-          console.error('Error in services snapshot listener:', error);
-          if (error.code === 'permission-denied') {
-            console.warn('Firebase permission denied. Please check Firestore security rules.');
-            // Set empty arrays to prevent UI errors
-            this.servicesSubject.next([]);
-            this.upcomingServicesSubject.next([]);
-          } else if (error.code === 'failed-precondition') {
-            console.warn('Firebase index missing. Please create the required composite index.');
-            // Fallback to simpler query without orderBy
-            this.setupFallbackListener(userId);
-          }
-        }
-      );
+      
+      // Start with fallback listener to avoid index requirement
+      this.setupFallbackListener(userId);
     } catch (error) {
       console.error('Error setting up services listener:', error);
       this.servicesSubject.next([]);
