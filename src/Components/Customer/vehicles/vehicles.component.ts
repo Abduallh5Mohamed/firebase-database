@@ -85,6 +85,10 @@ export class VehiclesComponent {
   // Service scheduling form
   serviceForm: FormGroup;
 
+  // Loading states
+  isLoading = false;
+  isGettingLocation = false;
+
   constructor(
     private fb: FormBuilder,
     private firebaseService: FirebaseServiceService,
@@ -339,7 +343,7 @@ export class VehiclesComponent {
       return;
     }
 
-    this.isLoading = true;
+    this.isGettingLocation = true;
     
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -369,11 +373,11 @@ export class VehiclesComponent {
             confirmButtonColor: '#ff3b3b'
           });
         } finally {
-          this.isLoading = false;
+          this.isGettingLocation = false;
         }
       },
       (error) => {
-        this.isLoading = false;
+        this.isGettingLocation = false;
         let errorMessage = 'فشل في تحديد الموقع';
         
         switch (error.code) {

@@ -273,6 +273,9 @@
                 {{ isGettingLocation ? 'جاري...' : 'موقعي' }}
               </button>
             </div>
+            <div class="error-message" *ngIf="getFieldError('location')">
+              {{ getFieldError('location') }}
+            </div>
           </div>
           <div class="form-group">
             <label for="rating">Expected Rating</label>
