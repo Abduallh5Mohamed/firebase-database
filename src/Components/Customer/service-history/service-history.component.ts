@@ -149,7 +149,7 @@ export class ServiceHistoryComponent implements OnInit {
         this.closeAddServiceModal();
         alert('Service added successfully!');
         
-      } catch (error) {
+      } catch (error: any) {
         console.error('Service History: Error adding service:', error);
         if (error.message && error.message.includes('Permission denied')) {
           this.errorMessage = 'Permission denied. Please check your account permissions or contact support.';

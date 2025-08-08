@@ -205,7 +205,7 @@ export class DashboardComponent implements OnInit {
         this.closeAddServiceModal();
         alert('Service booked successfully!');
         
-      } catch (error) {
+      } catch (error: any) {
         console.error('Customer Dashboard: Error adding service:', error);
         if (error.message && error.message.includes('Permission denied')) {
           this.errorMessage = 'Permission denied. Please check your account permissions or contact support.';
