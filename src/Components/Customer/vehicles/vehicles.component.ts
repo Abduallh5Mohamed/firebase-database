@@ -88,7 +88,6 @@ export class VehiclesComponent {
   // Loading states
   isLoading = false;
   isGettingLocation = false;
-  isGettingLocation = false;
 
   constructor(
     private fb: FormBuilder,
