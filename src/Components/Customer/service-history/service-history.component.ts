@@ -133,12 +133,17 @@ export class ServiceHistoryComponent implements OnInit {
         const userData = this.authService.getUserData();
         const customerName = userData?.displayName || currentUser?.displayName || 'Customer';
 
-        // Add to admin orders
-        await this.adminOrdersService.addOrderFromService(
-          { ...serviceData, id: serviceId },
-          customerName
-        );
-        console.log('Service History: Order added to admin dashboard');
+        // Try to add to admin orders
+        try {
+          await this.adminOrdersService.addOrderFromService(
+            { ...serviceData, id: serviceId },
+            customerName
+          );
+          console.log('Service History: Order added to admin dashboard');
+        } catch (adminError) {
+          console.warn('Service History: Failed to add to admin orders:', adminError);
+          // Don't fail the entire operation if admin order creation fails
+        }
 
         // Close modal and show success message
         this.closeAddServiceModal();
@@ -146,7 +151,11 @@ export class ServiceHistoryComponent implements OnInit {
         
       } catch (error) {
         console.error('Service History: Error adding service:', error);
-        this.errorMessage = 'Failed to add service. Please try again.';
+        if (error.message && error.message.includes('Permission denied')) {
+          this.errorMessage = 'Permission denied. Please check your account permissions or contact support.';
+        } else {
+          this.errorMessage = 'Failed to add service. Please try again.';
+        }
       } finally {
         this.isLoading = false;
       }

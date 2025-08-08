@@ -34,16 +34,33 @@ export class AdminOrdersService {
 
   // Initialize real-time listener for admin orders
   private initializeRealtimeListener(): void {
-    const ordersRef = collection(this.firestore, 'adminOrders');
-    const ordersQuery = query(ordersRef, orderBy('createdAt', 'desc'));
+    try {
+      const ordersRef = collection(this.firestore, 'adminOrders');
+      const ordersQuery = query(ordersRef, orderBy('createdAt', 'desc'));
 
-    onSnapshot(ordersQuery, (snapshot) => {
-      const orders: AdminOrder[] = [];
-      snapshot.forEach((doc) => {
-        orders.push({ ...doc.data(), id: doc.id } as AdminOrder);
-      });
-      this.ordersSubject.next(orders);
-    });
+      onSnapshot(ordersQuery, 
+        (snapshot) => {
+          const orders: AdminOrder[] = [];
+          snapshot.forEach((doc) => {
+            orders.push({ ...doc.data(), id: doc.id } as AdminOrder);
+          });
+          this.ordersSubject.next(orders);
+        },
+        (error) => {
+          console.error('Error in admin orders snapshot listener:', error);
+          if (error.code === 'permission-denied') {
+            console.warn('Firebase permission denied for admin orders. Please check Firestore security rules.');
+          } else if (error.code === 'failed-precondition') {
+            console.warn('Firebase index missing for admin orders. Please create the required composite index.');
+          }
+          // Set empty array to prevent UI errors
+          this.ordersSubject.next([]);
+        }
+      );
+    } catch (error) {
+      console.error('Error setting up admin orders listener:', error);
+      this.ordersSubject.next([]);
+    }
   }
 
   // Add new order from customer service booking
@@ -71,6 +88,9 @@ export class AdminOrdersService {
       return docRef.id;
     } catch (error) {
       console.error('Error adding admin order:', error);
+      if (error.code === 'permission-denied') {
+        throw new Error('Permission denied. Unable to create admin order. Please check account permissions.');
+      }
       throw error;
     }
   }
