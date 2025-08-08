@@ -7,6 +7,7 @@ import { CustomerProfileComponent } from '../profile/profile.component';
 import { FirebaseServiceService, ServiceBooking, UpcomingService } from '../../../Services/firebase-service.service';
 import { AuthService } from '../../../Services/auth.service';
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 
 interface RecentActivity {
@@ -61,6 +62,8 @@ export class DashboardComponent implements OnInit {
 
   // Modal state
   showAddServiceModal: boolean = false;
+  isGettingLocation: boolean = false;
+  currentLocation: string = '';
 
   addServiceForm: FormGroup;
 
@@ -78,7 +81,7 @@ export class DashboardComponent implements OnInit {
       date: ['', Validators.required],
       rating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
       serviceType: ['General Service', Validators.required],
-      location: ['Main Branch', Validators.required]
+      location: ['', Validators.required]
     });
   }
 
@@ -130,7 +133,7 @@ export class DashboardComponent implements OnInit {
       date: '',
       rating: 5,
       serviceType: 'General Service',
-      location: 'Main Branch'
+      location: ''
     });
     console.log('Customer Dashboard: Modal should be visible now');
     
@@ -152,7 +155,7 @@ export class DashboardComponent implements OnInit {
       date: '',
       rating: 5,
       serviceType: 'General Service',
-      location: 'Main Branch'
+      location: ''
     });
   }
 
@@ -184,7 +187,15 @@ export class DashboardComponent implements OnInit {
 
         // Close modal and show success message
         this.closeAddServiceModal();
-        alert('Service booked successfully!');
+        
+        // Show SweetAlert success message
+        Swal.fire({
+          icon: 'success',
+          title: 'تم بنجاح!',
+          text: 'تم حجز الخدمة بنجاح',
+          confirmButtonText: 'موافق',
+          confirmButtonColor: '#ff3b3b'
+        });
         
       } catch (error: any) {
         console.error('Customer Dashboard: Error adding service:', error);
@@ -215,7 +226,117 @@ export class DashboardComponent implements OnInit {
     return '';
   }
 
+  // Get current location
+  getCurrentLocation(): void {
+    if (!navigator.geolocation) {
+      Swal.fire({
+        icon: 'error',
+        title: 'خطأ',
+        text: 'المتصفح لا يدعم خدمة تحديد الموقع',
+        confirmButtonText: 'موافق',
+        confirmButtonColor: '#ff3b3b'
+      });
+      return;
+    }
+
+    this.isGettingLocation = true;
+    
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          
+          // Use reverse geocoding to get address
+          const response = await fetch(
+            `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=YOUR_API_KEY&language=ar&pretty=1`
+          );
+          
+          if (response.ok) {
+            const data = await response.json();
+            if (data.results && data.results.length > 0) {
+              const address = data.results[0].formatted;
+              this.currentLocation = address;
+              this.addServiceForm.patchValue({ location: address });
+            } else {
+              // Fallback to coordinates if no address found
+              this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+              this.addServiceForm.patchValue({ location: this.currentLocation });
+            }
+          } else {
+            // Fallback to coordinates if API fails
+            this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            this.addServiceForm.patchValue({ location: this.currentLocation });
+          }
+          
+          Swal.fire({
+            icon: 'success',
+            title: 'تم تحديد الموقع',
+            text: 'تم الحصول على موقعك الحالي بنجاح',
+            timer: 2000,
+            showConfirmButton: false
+          });
+          
+        } catch (error) {
+          console.error('Error getting location details:', error);
+          // Use coordinates as fallback
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+          this.addServiceForm.patchValue({ location: this.currentLocation });
+          
+          Swal.fire({
+            icon: 'info',
+            title: 'تم تحديد الموقع',
+            text: 'تم الحصول على إحداثيات موقعك',
+            timer: 2000,
+            showConfirmButton: false
+          });
+        } finally {
+          this.isGettingLocation = false;
+        }
+      },
+      (error) => {
+        this.isGettingLocation = false;
+        let errorMessage = 'فشل في تحديد الموقع';
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = 'تم رفض الإذن للوصول إلى الموقع';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = 'معلومات الموقع غير متاحة';
+            break;
+          case error.TIMEOUT:
+            errorMessage = 'انتهت مهلة طلب الموقع';
+            break;
+        }
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'خطأ في الموقع',
+          text: errorMessage,
+          confirmButtonText: 'موافق',
+          confirmButtonColor: '#ff3b3b'
+        });
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000
+      }
+    );
+  }
   setActiveTab(tab: string): void {
     this.activeTab = tab;
+  }
+
+  // Get today's date in YYYY-MM-DD format for date input min attribute
+  getTodayDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }

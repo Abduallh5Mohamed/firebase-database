@@ -150,7 +150,7 @@ export class FirebaseServiceService {
         status: 'scheduled',
         createdAt: new Date(),
         updatedAt: new Date(),
-        location: serviceData.location || 'Main Branch',
+        location: serviceData.location || '',
         duration: serviceData.duration || '60 mins',
         serviceType: serviceData.serviceType || 'General Service'
       };
