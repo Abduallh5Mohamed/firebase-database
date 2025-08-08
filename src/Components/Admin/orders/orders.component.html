@@ -81,20 +81,6 @@
               >⚙️ Settings</a
             >
           </li>
-          <li>
-            <a
-              class="dropdown-item"
-              (click)="selectMoreAction('Clear Modal Orders')"
-              >🗑️ Clear Modal Orders</a
-            >
-          </li>
-          <li>
-            <a
-              class="dropdown-item"
-              (click)="selectMoreAction('Remove Duplicate Orders')"
-              >🔄 Remove Duplicate Orders</a
-            >
-          </li>
         </ul>
       </div>
     </div>
@@ -173,7 +159,7 @@
             <input type="checkbox" [title]="'Select order ' + order.id" />
           </td>
           <td>
-            <strong>{{ order.id }}</strong>
+            <strong>{{ order.orderId }}</strong>
           </td>
           <td>{{ order.date }}</td>
           <td>
@@ -190,10 +176,10 @@
           </td>
           <td>
             <strong>{{
-              order.total | currency : "USD" : "symbol" : "1.2-2"
+              order.amount | currency : "USD" : "symbol" : "1.2-2"
             }}</strong>
           </td>
-          <td>{{ order.delivery }}</td>
+          <td>{{ order.location }}</td>
           <td>{{ order.items }} items</td>
           <td>
             <span
@@ -207,21 +193,21 @@
           <td>
             <button
               class="action-btn view"
-              (click)="viewOrder(order.id)"
+              (click)="viewOrder(order.id!)"
               title="View Order"
             >
               👁️
             </button>
             <button
               class="action-btn edit"
-              (click)="editOrder(order.id)"
+              (click)="editOrder(order.id!)"
               title="Edit Order"
             >
               ✏️
             </button>
             <button
               class="action-btn delete"
-              (click)="deleteOrder(order.id)"
+              (click)="deleteOrder(order.id!)"
               title="Delete Order"
             >
               🗑️

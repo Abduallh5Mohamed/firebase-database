@@ -1,23 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ServiceHistoryService } from '../dashboard/service-history.service';
-import { OrderCommunicationService } from '../../../Services/order-communication.service';
-import { UserDataService } from '../../../Services/user-data.service';
-
-interface ServiceHistory {
-  id: number;
-  title: string;
-  status: string;
-  price: number;
-  rating: number;
-  date: string;
-  technician: string;
-  vehicle: string;
-  location: string;
-  duration: string;
-  serviceType: string;
-}
+import { FirebaseServiceService, ServiceBooking } from '../../../Services/firebase-service.service';
+import { AdminOrdersService } from '../../../Services/admin-orders.service';
+import { AuthService } from '../../../Services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-service-history',
@@ -27,37 +14,54 @@ interface ServiceHistory {
   styleUrls: ['./service-history.component.css'],
 })
 export class ServiceHistoryComponent implements OnInit {
-  serviceHistory: ServiceHistory[] = [];
+  serviceHistory: ServiceBooking[] = [];
   showAddServiceModal: boolean = false;
   addServiceForm: FormGroup;
+  private subscriptions: Subscription[] = [];
+  isLoading = false;
+  errorMessage = '';
 
   // Filter options
   selectedServiceType: string = 'all';
   selectedVehicle: string = 'all';
 
   constructor(
-    public serviceHistoryService: ServiceHistoryService,
     private fb: FormBuilder,
-    private orderCommunicationService: OrderCommunicationService,
-    private userDataService: UserDataService
+    private firebaseService: FirebaseServiceService,
+    private adminOrdersService: AdminOrdersService,
+    private authService: AuthService
   ) {
     this.addServiceForm = this.fb.group({
       title: ['', Validators.required],
+      description: ['', Validators.required],
       price: [0, [Validators.required, Validators.min(0)]],
       technician: ['', Validators.required],
       vehicle: ['', Validators.required],
       date: ['', Validators.required],
       rating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
+      serviceType: ['General Service', Validators.required],
+      location: ['Main Branch', Validators.required]
     });
   }
 
   ngOnInit() {
-    this.serviceHistoryService.history$.subscribe((history: ServiceHistory[]) => {
-      this.serviceHistory = history;
-    });
+    this.loadServiceHistory();
   }
 
-  get filteredServices(): ServiceHistory[] {
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  private loadServiceHistory(): void {
+    const servicesSub = this.firebaseService.getCurrentUserServices().subscribe((history: ServiceBooking[]) => {
+      this.serviceHistory = history;
+      console.log('Service history loaded:', history);
+    });
+    
+    this.subscriptions.push(servicesSub);
+  }
+
+  get filteredServices(): ServiceBooking[] {
     return this.serviceHistory.filter(service => {
       const matchesServiceType =
         this.selectedServiceType === 'all' || service.serviceType === this.selectedServiceType;
@@ -71,116 +75,101 @@ export class ServiceHistoryComponent implements OnInit {
     this.showAddServiceModal = true;
     this.addServiceForm.reset({
       title: '',
+      description: '',
       price: 0,
       technician: '',
       vehicle: '',
       date: '',
       rating: 5,
+      serviceType: 'General Service',
+      location: 'Main Branch'
     });
   }
 
   closeAddServiceModal(): void {
     this.showAddServiceModal = false;
+    this.errorMessage = '';
     this.addServiceForm.reset({
       title: '',
+      description: '',
       price: 0,
       technician: '',
       vehicle: '',
       date: '',
       rating: 5,
+      serviceType: 'General Service',
+      location: 'Main Branch'
     });
   }
 
-  addNewService(): void {
+  async addNewService(): Promise<void> {
     if (this.addServiceForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+      
       const formValue = this.addServiceForm.value;
       console.log('Service History: Adding new service with form data:', formValue);
       
-      // Generate a random customer name instead of using actual user data
-      const randomCustomerNames = [
-        'John Smith', 'Sarah Johnson', 'Michael Brown', 'Emily Davis', 'David Wilson',
-        'Lisa Anderson', 'Robert Taylor', 'Jennifer Martinez', 'William Garcia',
-        'Amanda Rodriguez', 'James Lopez', 'Michelle Gonzalez', 'Christopher Perez',
-        'Jessica Torres', 'Daniel Ramirez', 'Ashley Lewis', 'Matthew Clark',
-        'Nicole Lee', 'Joshua Walker', 'Stephanie Hall', 'Andrew Allen',
-        'Rebecca Young', 'Kevin King', 'Laura Wright', 'Brian Scott',
-        'Melissa Green', 'Steven Baker', 'Heather Adams', 'Timothy Nelson',
-        'Amber Carter', 'Jason Mitchell', 'Rachel Roberts', 'Jeffrey Turner',
-        'Megan Phillips', 'Ryan Campbell', 'Lauren Parker', 'Gary Evans',
-        'Kimberly Edwards', 'Nicholas Collins', 'Christine Stewart', 'Eric Morris',
-        'Angela Rogers', 'Jonathan Reed', 'Tiffany Cook', 'Justin Bailey',
-        'Brittany Cooper', 'Brandon Richardson', 'Samantha Cox', 'Tyler Ward',
-        'Vanessa Torres', 'Sean Peterson', 'Crystal Gray', 'Nathan James',
-        'Monica Butler', 'Adam Simmons', 'Erica Foster', 'Kyle Gonzales',
-        'Tracy Bryant', 'Derek Alexander', 'Stacy Russell', 'Brent Griffin',
-        'Diana Diaz', 'Travis Hayes', 'Natalie Sanders', 'Marcus Price',
-        'Holly Bennett', 'Corey Wood', 'Jacqueline Barnes', 'Dustin Ross',
-        'Catherine Henderson', 'Gregory Coleman', 'Bethany Jenkins', 'Lance Perry',
-        'Misty Powell', 'Derrick Long', 'Kristina Patterson', 'Troy Hughes',
-        'Gina Flores', 'Mario Butler', 'Yolanda Simmons', 'Dwayne Foster',
-        'Latoya Gonzales', 'Malik Bryant', 'Shanice Alexander', 'Terrell Russell',
-        'Keisha Griffin', 'Darnell Diaz', 'Tameka Hayes', 'Lamar Sanders'
-      ];
-      const randomIndex = Math.floor(Math.random() * randomCustomerNames.length);
-      const customerName = randomCustomerNames[randomIndex];
-      
-      // Generate random payment status
-      const randomPaymentStatus = Math.random() > 0.5 ? 'Success' : 'Pending';
-      
-      const newServiceObj = {
-        id: Date.now(),
-        title: formValue.title,
-        status: 'Completed',
-        price: formValue.price,
-        rating: formValue.rating,
-        date: this.formatDate(formValue.date),
-        technician: formValue.technician,
-        vehicle: formValue.vehicle,
-        location: 'Main Branch',
-        duration: '60 mins',
-        serviceType: 'General Service'
-      };
-      
-      this.serviceHistoryService.addService(newServiceObj);
-      console.log('Service History: Service added to service history:', newServiceObj);
-      
-      // Add to admin orders component
-      const orderData = {
-        title: formValue.title,
-        price: formValue.price,
-        technician: formValue.technician,
-        vehicle: formValue.vehicle,
-        date: formValue.date,
-        location: 'Main Branch',
-        customerName: customerName,
-        payment: randomPaymentStatus // Add random payment status
-      };
-      console.log('Service History: Adding order data to admin:', orderData);
-      
       try {
-        this.orderCommunicationService.addCustomerOrder(orderData);
-        console.log('Service History: Order data successfully sent to admin');
+        // Prepare service data for Firebase
+        const serviceData = {
+          title: formValue.title,
+          description: formValue.description,
+          price: formValue.price,
+          technician: formValue.technician,
+          vehicle: formValue.vehicle,
+          serviceDate: new Date(formValue.date),
+          rating: formValue.rating,
+          serviceType: formValue.serviceType,
+          location: formValue.location
+        };
+
+        // Add service to Firebase
+        const serviceId = await this.firebaseService.addServiceBooking(serviceData);
+        console.log('Service History: Service added to Firebase with ID:', serviceId);
+
+        // Get current user data for admin order
+        const currentUser = this.authService.getCurrentUser();
+        const userData = this.authService.getUserData();
+        const customerName = userData?.displayName || currentUser?.displayName || 'Customer';
+
+        // Add to admin orders
+        await this.adminOrdersService.addOrderFromService(
+          { ...serviceData, id: serviceId },
+          customerName
+        );
+        console.log('Service History: Order added to admin dashboard');
+
+        // Close modal and show success message
+        this.closeAddServiceModal();
+        alert('Service added successfully!');
+        
       } catch (error) {
-        console.error('Service History: Error sending order data to admin:', error);
+        console.error('Service History: Error adding service:', error);
+        this.errorMessage = 'Failed to add service. Please try again.';
+      } finally {
+        this.isLoading = false;
       }
-      
-      this.closeAddServiceModal();
     } else {
       console.log('Service History: Form is invalid:', this.addServiceForm.errors);
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.addServiceForm.controls).forEach(key => {
+        this.addServiceForm.get(key)?.markAsTouched();
+      });
     }
   }
 
-  private formatDate(dateString: string): string {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+  // Get field error message
+  getFieldError(fieldName: string): string {
+    const field = this.addServiceForm.get(fieldName);
+    if (field && field.errors && field.touched) {
+      if (field.errors['required']) return `${fieldName} is required`;
+      if (field.errors['min']) return `${fieldName} must be greater than 0`;
+    }
+    return '';
   }
 
-  trackByServiceId(index: number, service: ServiceHistory): number {
-    return service.id;
+  trackByServiceId(index: number, service: ServiceBooking): number {
+    return service.id ? parseInt(service.id) : index;
   }
 }

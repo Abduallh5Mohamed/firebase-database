@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ServiceHistoryService } from '../dashboard/service-history.service';
-import { OrderCommunicationService } from '../../../Services/order-communication.service';
+import { FirebaseServiceService } from '../../../Services/firebase-service.service';
+import { AdminOrdersService } from '../../../Services/admin-orders.service';
+import { AuthService } from '../../../Services/auth.service';
 
 interface Vehicle {
   id: number;
@@ -86,15 +87,19 @@ export class VehiclesComponent {
 
   constructor(
     private fb: FormBuilder,
-    private serviceHistoryService: ServiceHistoryService,
-    private orderCommunicationService: OrderCommunicationService
+    private firebaseService: FirebaseServiceService,
+    private adminOrdersService: AdminOrdersService,
+    private authService: AuthService
   ) {
     this.serviceForm = this.fb.group({
       title: ['', Validators.required],
+      description: ['', Validators.required],
       price: [0, [Validators.required, Validators.min(0)]],
       technician: ['', Validators.required],
       date: ['', Validators.required],
       rating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
+      serviceType: ['General Service', Validators.required],
+      location: ['Main Branch', Validators.required]
     });
   }
 
@@ -233,10 +238,13 @@ export class VehiclesComponent {
     this.showScheduleServiceModal = true;
     this.serviceForm.reset({
       title: '',
+      description: '',
       price: 0,
       technician: '',
       date: '',
       rating: 5,
+      serviceType: 'General Service',
+      location: 'Main Branch'
     });
   }
 
@@ -245,102 +253,75 @@ export class VehiclesComponent {
     this.selectedVehicleForService = null;
     this.serviceForm.reset({
       title: '',
+      description: '',
       price: 0,
       technician: '',
       date: '',
       rating: 5,
+      serviceType: 'General Service',
+      location: 'Main Branch'
     });
   }
 
-  scheduleService(): void {
+  async scheduleService(): Promise<void> {
     if (this.serviceForm.valid && this.selectedVehicleForService) {
       const formValue = this.serviceForm.value;
       console.log('Vehicles Component: Scheduling service with form data:', formValue);
       
-      // Generate a random customer name
-      const randomCustomerNames = [
-        'John Smith', 'Sarah Johnson', 'Michael Brown', 'Emily Davis', 'David Wilson',
-        'Lisa Anderson', 'Robert Taylor', 'Jennifer Martinez', 'William Garcia',
-        'Amanda Rodriguez', 'James Lopez', 'Michelle Gonzalez', 'Christopher Perez',
-        'Jessica Torres', 'Daniel Ramirez', 'Ashley Lewis', 'Matthew Clark',
-        'Nicole Lee', 'Joshua Walker', 'Stephanie Hall', 'Andrew Allen',
-        'Rebecca Young', 'Kevin King', 'Laura Wright', 'Brian Scott',
-        'Melissa Green', 'Steven Baker', 'Heather Adams', 'Timothy Nelson',
-        'Amber Carter', 'Jason Mitchell', 'Rachel Roberts', 'Jeffrey Turner',
-        'Megan Phillips', 'Ryan Campbell', 'Lauren Parker', 'Gary Evans',
-        'Kimberly Edwards', 'Nicholas Collins', 'Christine Stewart', 'Eric Morris',
-        'Angela Rogers', 'Jonathan Reed', 'Tiffany Cook', 'Justin Bailey',
-        'Brittany Cooper', 'Brandon Richardson', 'Samantha Cox', 'Tyler Ward',
-        'Vanessa Torres', 'Sean Peterson', 'Crystal Gray', 'Nathan James',
-        'Monica Butler', 'Adam Simmons', 'Erica Foster', 'Kyle Gonzales',
-        'Tracy Bryant', 'Derek Alexander', 'Stacy Russell', 'Brent Griffin',
-        'Diana Diaz', 'Travis Hayes', 'Natalie Sanders', 'Marcus Price',
-        'Holly Bennett', 'Corey Wood', 'Jacqueline Barnes', 'Dustin Ross',
-        'Catherine Henderson', 'Gregory Coleman', 'Bethany Jenkins', 'Lance Perry',
-        'Misty Powell', 'Derrick Long', 'Kristina Patterson', 'Troy Hughes',
-        'Gina Flores', 'Mario Butler', 'Yolanda Simmons', 'Dwayne Foster',
-        'Latoya Gonzales', 'Malik Bryant', 'Shanice Alexander', 'Terrell Russell',
-        'Keisha Griffin', 'Darnell Diaz', 'Tameka Hayes', 'Lamar Sanders'
-      ];
-      const randomIndex = Math.floor(Math.random() * randomCustomerNames.length);
-      const customerName = randomCustomerNames[randomIndex];
-      
-      // Generate random payment status
-      const randomPaymentStatus = Math.random() > 0.5 ? 'Success' : 'Pending';
-      
-      // Create new service object
-      const newService = {
-        id: Date.now(),
-        title: formValue.title,
-        status: 'Completed',
-        price: formValue.price,
-        rating: formValue.rating,
-        date: this.formatDate(formValue.date),
-        technician: formValue.technician,
-        vehicle: `${this.selectedVehicleForService.year} ${this.selectedVehicleForService.name}`,
-        location: 'Main Branch',
-        duration: '60 mins',
-        serviceType: 'General Service'
-      };
-
-      // Add to service history using the service
-      this.serviceHistoryService.addService(newService);
-      console.log('Vehicles Component: Service added to service history:', newService);
-      
-      // Add to admin orders component
-      const orderData = {
-        title: formValue.title,
-        price: formValue.price,
-        technician: formValue.technician,
-        vehicle: `${this.selectedVehicleForService.year} ${this.selectedVehicleForService.name}`,
-        date: formValue.date,
-        location: 'Main Branch',
-        customerName: customerName,
-        payment: randomPaymentStatus
-      };
-      console.log('Vehicles Component: Adding order data to admin:', orderData);
-      
       try {
-        this.orderCommunicationService.addCustomerOrder(orderData);
-        console.log('Vehicles Component: Order data successfully sent to admin');
+        // Prepare service data for Firebase
+        const serviceData = {
+          title: formValue.title,
+          description: formValue.description || `${formValue.title} for ${this.selectedVehicleForService.year} ${this.selectedVehicleForService.name}`,
+          price: formValue.price,
+          technician: formValue.technician,
+          vehicle: `${this.selectedVehicleForService.year} ${this.selectedVehicleForService.name}`,
+          serviceDate: new Date(formValue.date),
+          rating: formValue.rating,
+          serviceType: formValue.serviceType,
+          location: formValue.location
+        };
+
+        // Add service to Firebase
+        const serviceId = await this.firebaseService.addServiceBooking(serviceData);
+        console.log('Vehicles Component: Service added to Firebase with ID:', serviceId);
+
+        // Get current user data for admin order
+        const currentUser = this.authService.getCurrentUser();
+        const userData = this.authService.getUserData();
+        const customerName = userData?.displayName || currentUser?.displayName || 'Customer';
+
+        // Add to admin orders
+        await this.adminOrdersService.addOrderFromService(
+          { ...serviceData, id: serviceId },
+          customerName
+        );
+        console.log('Vehicles Component: Order added to admin dashboard');
+
+        // Close modal and show success message
+        this.closeScheduleServiceModal();
+        alert('Service scheduled successfully!');
+        
       } catch (error) {
-        console.error('Vehicles Component: Error sending order data to admin:', error);
+        console.error('Vehicles Component: Error scheduling service:', error);
+        alert('Failed to schedule service. Please try again.');
       }
-      
-      // Close modal and reset form
-      this.closeScheduleServiceModal();
     } else {
       console.log('Vehicles Component: Form is invalid:', this.serviceForm.errors);
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.serviceForm.controls).forEach(key => {
+        this.serviceForm.get(key)?.markAsTouched();
+      });
     }
   }
 
-  private formatDate(dateString: string): string {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+  // Get field error message
+  getFieldError(fieldName: string): string {
+    const field = this.serviceForm.get(fieldName);
+    if (field && field.errors && field.touched) {
+      if (field.errors['required']) return `${fieldName} is required`;
+      if (field.errors['min']) return `${fieldName} must be greater than 0`;
+    }
+    return '';
   }
 }
