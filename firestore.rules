@@ -1,0 +1,335 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // =====================================
+    // USERS COLLECTION
+    // =====================================
+    match /users/{userId} {
+      // Allow users to read and write their own profile
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      // Allow admins to read all user profiles
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      
+      // Allow admins to create new users (drivers, technicians)
+      allow create: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // =====================================
+    // SERVICES COLLECTION (Customer Service Bookings)
+    // =====================================
+    match /services/{serviceId} {
+      // Allow users to read and write their own services
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      
+      // Allow users to create services for themselves
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.userId;
+      
+      // Allow technicians to read services assigned to them
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'technician';
+      
+      // Allow admins to read all services
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      
+      // Allow technicians and admins to update service status
+      allow update: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'technician' ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+    
+    // =====================================
+    // ADMIN ORDERS COLLECTION
+    // =====================================
+    match /adminOrders/{orderId} {
+      // Only admins can read, write, and delete admin orders
+      allow read, write, delete: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      
+      // Allow system to create orders (for service bookings)
+      allow create: if request.auth != null;
+      
+      // Allow technicians to read orders assigned to them
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'technician' &&
+        resource.data.technician == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.displayName;
+    }
+    
+    // =====================================
+    // VEHICLES COLLECTION (Customer Vehicles)
+    // =====================================
+    match /vehicles/{vehicleId} {
+      // Allow users to read and write their own vehicles
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      
+      // Allow users to create vehicles for themselves
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.userId;
+      
+      // Allow admins to read all vehicles
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // =====================================
+    // TECHNICIAN JOBS COLLECTION
+    // =====================================
+    match /technicianJobs/{jobId} {
+      // Allow technicians to read jobs assigned to them
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'technician' &&
+        request.auth.uid == resource.data.technicianId;
+      
+      // Allow technicians to update job status
+      allow update: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'technician' &&
+        request.auth.uid == resource.data.technicianId;
+      
+      // Allow admins to read and write all technician jobs
+      allow read, write: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      
+      // Allow system to create jobs
+      allow create: if request.auth != null;
+    }
+    
+    // =====================================
+    // DRIVER TRIPS COLLECTION
+    // =====================================
+    match /driverTrips/{tripId} {
+      // Allow drivers to read trips assigned to them
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'driver' &&
+        request.auth.uid == resource.data.driverId;
+      
+      // Allow drivers to update trip status
+      allow update: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'driver' &&
+        request.auth.uid == resource.data.driverId;
+      
+      // Allow admins to read and write all driver trips
+      allow read, write: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      
+      // Allow system to create trips
+      allow create: if request.auth != null;
+    }
+    
+    // =====================================
+    // NOTIFICATIONS COLLECTION
+    // =====================================
+    match /notifications/{notificationId} {
+      // Allow users to read their own notifications
+      allow read: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      
+      // Allow users to update their own notifications (mark as read)
+      allow update: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      
+      // Allow system to create notifications
+      allow create: if request.auth != null;
+      
+      // Allow admins to read all notifications
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // =====================================
+    // EARNINGS COLLECTION (Driver/Technician Earnings)
+    // =====================================
+    match /earnings/{earningId} {
+      // Allow users to read their own earnings
+      allow read: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      
+      // Allow admins to read and write all earnings
+      allow read, write: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      
+      // Allow system to create earnings records
+      allow create: if request.auth != null;
+    }
+    
+    // =====================================
+    // REVIEWS COLLECTION
+    // =====================================
+    match /reviews/{reviewId} {
+      // Allow users to read reviews for services they booked
+      allow read: if request.auth != null && 
+        request.auth.uid == resource.data.customerId;
+      
+      // Allow users to create reviews for their own services
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.customerId;
+      
+      // Allow technicians/drivers to read reviews about them
+      allow read: if request.auth != null && 
+        request.auth.uid == resource.data.serviceProviderId;
+      
+      // Allow admins to read all reviews
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // =====================================
+    // STOCK/INVENTORY COLLECTION
+    // =====================================
+    match /inventory/{itemId} {
+      // Allow technicians to read inventory
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'technician';
+      
+      // Allow admins to read and write inventory
+      allow read, write: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // =====================================
+    // FINANCIAL RECORDS COLLECTION
+    // =====================================
+    match /financialRecords/{recordId} {
+      // Only admins can access financial records
+      allow read, write: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // =====================================
+    // SYSTEM LOGS COLLECTION
+    // =====================================
+    match /systemLogs/{logId} {
+      // Only admins can read system logs
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      
+      // Allow system to create logs
+      allow create: if request.auth != null;
+    }
+    
+    // =====================================
+    // CHAT/MESSAGES COLLECTION
+    // =====================================
+    match /messages/{messageId} {
+      // Allow users to read messages where they are sender or recipient
+      allow read: if request.auth != null && 
+        (request.auth.uid == resource.data.senderId || 
+         request.auth.uid == resource.data.recipientId);
+      
+      // Allow users to create messages where they are the sender
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.senderId;
+      
+      // Allow admins to read all messages
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // =====================================
+    // FEEDBACK COLLECTION
+    // =====================================
+    match /feedback/{feedbackId} {
+      // Allow anyone to create feedback
+      allow create: if request.auth != null;
+      
+      // Allow users to read their own feedback
+      allow read: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      
+      // Allow admins to read all feedback
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // =====================================
+    // ANALYTICS COLLECTION
+    // =====================================
+    match /analytics/{analyticsId} {
+      // Only admins can access analytics
+      allow read, write: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // =====================================
+    // SETTINGS COLLECTION
+    // =====================================
+    match /settings/{settingId} {
+      // Allow users to read and write their own settings
+      allow read, write: if request.auth != null && 
+        request.auth.uid == userId;
+      
+      // Allow admins to read and write all settings
+      allow read, write: if request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // =====================================
+    // HELPER FUNCTIONS (if needed for complex rules)
+    // =====================================
+    
+    // Function to check if user is admin
+    function isAdmin() {
+      return request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Function to check if user is technician
+    function isTechnician() {
+      return request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'technician';
+    }
+    
+    // Function to check if user is driver
+    function isDriver() {
+      return request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'driver';
+    }
+    
+    // Function to check if user owns the resource
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+    
+    // =====================================
+    // FALLBACK RULE - DENY ALL OTHER ACCESS
+    // =====================================
+    // This ensures that any collection not explicitly defined above is denied
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
