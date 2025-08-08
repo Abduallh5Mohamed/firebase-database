@@ -15,13 +15,8 @@
         <label for="displayName">Display Name</label>
         <div class="input-wrapper">
           <i class="fas fa-user input-icon"></i>
-          <input
-            type="text"
-            id="displayName"
-            formControlName="displayName"
-            placeholder="Enter your display name"
-            [class.error]="signUpForm.get('displayName')?.invalid && signUpForm.get('displayName')?.touched"
-          />
+          <input type="text" id="displayName" formControlName="displayName" placeholder="Enter your display name"
+            [class.error]="signUpForm.get('displayName')?.invalid && signUpForm.get('displayName')?.touched" />
         </div>
         <div class="error-message" *ngIf="getFieldError('displayName')">
           {{ getFieldError('displayName') }}
@@ -33,13 +28,8 @@
         <label for="email">Email Address</label>
         <div class="input-wrapper">
           <i class="fas fa-envelope input-icon"></i>
-          <input
-            type="email"
-            id="email"
-            formControlName="email"
-            placeholder="Enter your email address"
-            [class.error]="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched"
-          />
+          <input type="email" id="email" formControlName="email" placeholder="Enter your email address"
+            [class.error]="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched" />
         </div>
         <div class="error-message" *ngIf="getFieldError('email')">
           {{ getFieldError('email') }}
@@ -51,21 +41,54 @@
         <label for="password">Password</label>
         <div class="input-wrapper">
           <i class="fas fa-lock input-icon"></i>
-          <input
-            [type]="showPassword ? 'text' : 'password'"
-            id="password"
-            formControlName="password"
+          <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
             placeholder="Enter your password"
-            [class.error]="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched"
-          />
-          <button
-            type="button"
-            class="toggle-password"
-            (click)="togglePasswordVisibility()"
-          >
+            [class.error]="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
             <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
           </button>
         </div>
+
+        <!-- Password Strength Indicator -->
+        <div class="password-strength" *ngIf="signUpForm.get('password')?.value">
+          <div class="strength-bar">
+            <div class="strength-fill" [style.width.%]="(passwordStrength.score / 6) * 100"
+              [style.background-color]="passwordStrength.color"></div>
+          </div>
+          <div class="strength-text" [style.color]="passwordStrength.color">
+            {{ passwordStrength.feedback[0] || 'Enter password' }}
+          </div>
+        </div>
+
+        <!-- Password Requirements -->
+        <div class="password-requirements" *ngIf="signUpForm.get('password')?.value">
+          <div class="requirement" [class.met]="hasMinLength(signUpForm.get('password')?.value)">
+            <i class="fas" [class.fa-check]="hasMinLength(signUpForm.get('password')?.value)"
+              [class.fa-times]="!hasMinLength(signUpForm.get('password')?.value)"></i>
+            At least 8 characters
+          </div>
+          <div class="requirement" [class.met]="hasUppercase(signUpForm.get('password')?.value)">
+            <i class="fas" [class.fa-check]="hasUppercase(signUpForm.get('password')?.value)"
+              [class.fa-times]="!hasUppercase(signUpForm.get('password')?.value)"></i>
+            One uppercase letter
+          </div>
+          <div class="requirement" [class.met]="hasLowercase(signUpForm.get('password')?.value)">
+            <i class="fas" [class.fa-check]="hasLowercase(signUpForm.get('password')?.value)"
+              [class.fa-times]="!hasLowercase(signUpForm.get('password')?.value)"></i>
+            One lowercase letter
+          </div>
+          <div class="requirement" [class.met]="hasNumber(signUpForm.get('password')?.value)">
+            <i class="fas" [class.fa-check]="hasNumber(signUpForm.get('password')?.value)"
+              [class.fa-times]="!hasNumber(signUpForm.get('password')?.value)"></i>
+            One number
+          </div>
+          <div class="requirement" [class.met]="hasSpecialChar(signUpForm.get('password')?.value)">
+            <i class="fas" [class.fa-check]="hasSpecialChar(signUpForm.get('password')?.value)"
+              [class.fa-times]="!hasSpecialChar(signUpForm.get('password')?.value)"></i>
+            One special character
+          </div>
+        </div>
+
         <div class="error-message" *ngIf="getFieldError('password')">
           {{ getFieldError('password') }}
         </div>
@@ -76,18 +99,10 @@
         <label for="confirmPassword">Confirm Password</label>
         <div class="input-wrapper">
           <i class="fas fa-lock input-icon"></i>
-          <input
-            [type]="showConfirmPassword ? 'text' : 'password'"
-            id="confirmPassword"
-            formControlName="confirmPassword"
-            placeholder="Confirm your password"
-            [class.error]="signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched"
-          />
-          <button
-            type="button"
-            class="toggle-password"
-            (click)="toggleConfirmPasswordVisibility()"
-          >
+          <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword"
+            formControlName="confirmPassword" placeholder="Confirm your password"
+            [class.error]="signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched" />
+          <button type="button" class="toggle-password" (click)="toggleConfirmPasswordVisibility()">
             <i [class]="showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
           </button>
         </div>
@@ -100,13 +115,11 @@
       <!-- Terms and Conditions -->
       <div class="form-group checkbox-group">
         <label class="checkbox-label">
-          <input
-            type="checkbox"
-            formControlName="acceptTerms"
-          />
+          <input type="checkbox" formControlName="acceptTerms" />
           <span class="checkmark"></span>
           <span class="checkbox-text">
-            I agree to the <a href="#" class="link">Terms & Conditions</a> and <a href="#" class="link">Privacy Policy</a>
+            I agree to the <a href="#" class="link">Terms & Conditions</a> and <a href="#" class="link">Privacy
+              Policy</a>
           </span>
         </label>
         <div class="error-message" *ngIf="getFieldError('acceptTerms')">
@@ -121,11 +134,7 @@
       </div>
 
       <!-- Submit Button -->
-      <button
-        type="submit"
-        class="auth-btn primary"
-        [disabled]="signUpForm.invalid || isLoading"
-      >
+      <button type="submit" class="auth-btn primary" [disabled]="signUpForm.invalid || isLoading">
         <span *ngIf="!isLoading">Create Account</span>
         <span *ngIf="isLoading" class="loading">
           <i class="fas fa-spinner fa-spin"></i>
@@ -141,12 +150,7 @@
 
     <!-- Social Login -->
     <div class="social-login">
-      <button
-        type="button"
-        class="social-btn google full-width"
-        (click)="signUpWithGoogle()"
-        [disabled]="isLoading"
-      >
+      <button type="button" class="social-btn google full-width" (click)="signUpWithGoogle()" [disabled]="isLoading">
         <i class="fab fa-google"></i>
         Google
       </button>
