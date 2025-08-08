@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FirebaseServiceService, ServiceBooking } from '../../../Services/firebase-service.service';
-import { AdminOrdersService } from '../../../Services/admin-orders.service';
 import { AuthService } from '../../../Services/auth.service';
 import { Subscription } from 'rxjs';
 
@@ -28,7 +27,6 @@ export class ServiceHistoryComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private firebaseService: FirebaseServiceService,
-    private adminOrdersService: AdminOrdersService,
     private authService: AuthService
   ) {
     this.addServiceForm = this.fb.group({
@@ -127,23 +125,6 @@ export class ServiceHistoryComponent implements OnInit {
         // Add service to Firebase
         const serviceId = await this.firebaseService.addServiceBooking(serviceData);
         console.log('Service History: Service added to Firebase with ID:', serviceId);
-
-        // Get current user data for admin order
-        const currentUser = this.authService.getCurrentUser();
-        const userData = this.authService.getUserData();
-        const customerName = userData?.displayName || currentUser?.displayName || 'Customer';
-
-        // Try to add to admin orders
-        try {
-          await this.adminOrdersService.addOrderFromService(
-            { ...serviceData, id: serviceId },
-            customerName
-          );
-          console.log('Service History: Order added to admin dashboard');
-        } catch (adminError) {
-          console.warn('Service History: Failed to add to admin orders:', adminError);
-          // Don't fail the entire operation if admin order creation fails
-        }
 
         // Close modal and show success message
         this.closeAddServiceModal();

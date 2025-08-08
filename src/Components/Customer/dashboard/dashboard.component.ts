@@ -5,7 +5,6 @@ import { VehiclesComponent } from '../vehicles/vehicles.component';
 import { ServiceHistoryComponent } from '../service-history/service-history.component';
 import { CustomerProfileComponent } from '../profile/profile.component';
 import { FirebaseServiceService, ServiceBooking, UpcomingService } from '../../../Services/firebase-service.service';
-import { AdminOrdersService } from '../../../Services/admin-orders.service';
 import { AuthService } from '../../../Services/auth.service';
 import { Subscription } from 'rxjs';
 
@@ -68,7 +67,6 @@ export class DashboardComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private firebaseService: FirebaseServiceService,
-    private adminOrdersService: AdminOrdersService,
     private authService: AuthService
   ) {
     this.addServiceForm = this.fb.group({
@@ -183,23 +181,6 @@ export class DashboardComponent implements OnInit {
         // Add service to Firebase
         const serviceId = await this.firebaseService.addServiceBooking(serviceData);
         console.log('Customer Dashboard: Service added to Firebase with ID:', serviceId);
-
-        // Get current user data for admin order
-        const currentUser = this.authService.getCurrentUser();
-        const userData = this.authService.getUserData();
-        const customerName = userData?.displayName || currentUser?.displayName || 'Customer';
-
-        // Try to add to admin orders
-        try {
-          await this.adminOrdersService.addOrderFromService(
-            { ...serviceData, id: serviceId },
-            customerName
-          );
-          console.log('Customer Dashboard: Order added to admin dashboard');
-        } catch (adminError) {
-          console.warn('Customer Dashboard: Failed to add to admin orders:', adminError);
-          // Don't fail the entire operation if admin order creation fails
-        }
 
         // Close modal and show success message
         this.closeAddServiceModal();
